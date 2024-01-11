@@ -1,0 +1,12 @@
+# Development environment variables
+server:
+  port: 3000
+
+spring:
+  application:
+    name: Maktab
+
+# Secret values
+secret:
+  my-key: my-value
+  jwt-secret: example

@@ -1,0 +1,12 @@
+# Production environment variables
+spring:
+  application:
+    name: Maktab Production
+server:
+  port: 80
+
+# Secret values
+secret:
+  my-key: my-value
+  jwt-secret: better-example-key
+
