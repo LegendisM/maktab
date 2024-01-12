@@ -1,10 +1,21 @@
 # Development environment variables
-server:
-  port: 3000
 
+# Spring configuration
 spring:
   application:
     name: Maktab
+  datasource:
+    url: jdbc:postgresql://localhost:5432/maktab
+    username: root
+    password: root
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+# Server configuration
+server:
+  port: 3000
 
 # Secret values
 secret:

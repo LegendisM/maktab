@@ -17,29 +17,29 @@ import org.springframework.web.bind.annotation.RestController
 class BookController(
     val bookService: BookService,
 ) {
+    @PostMapping("/")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun createBook(): String {
+        return bookService.createBook()
+    }
+
     @GetMapping()
-    fun findAll(): List<String> {
-        return bookService.findAll()
+    fun getAllBooks(): List<String> {
+        return bookService.getAllBooks()
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable("id") id: String): String {
-        return bookService.findById(id)
-    }
-
-    @PostMapping("/")
-    @ResponseStatus(HttpStatus.CREATED)
-    fun createOne(): String {
-        return bookService.create()
+    fun getBookById(@PathVariable("id") id: String): String {
+        return bookService.getBookById(id)
     }
 
     @PatchMapping("/{id}")
-    fun updateOne(@PathVariable("id") id: String): String {
-        return bookService.updateOne(id)
+    fun updateBook(@PathVariable("id") id: String): String {
+        return bookService.updateBook(id)
     }
 
     @DeleteMapping("/{id}")
-    fun removeOne(@PathVariable("id") id: String): String {
-        return bookService.removeOne(id)
+    fun deleteBook(@PathVariable("id") id: String): String {
+        return bookService.deleteBook(id)
     }
 }

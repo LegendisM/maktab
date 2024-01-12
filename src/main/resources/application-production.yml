@@ -1,7 +1,19 @@
 # Production environment variables
+
+# Spring configuration
 spring:
   application:
-    name: Maktab Production
+    name: Maktab
+  datasource:
+    url: jdbc:postgresql://localhost:5432/maktab
+    username: root
+    password:
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+# Server configuration
 server:
   port: 80
 
