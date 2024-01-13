@@ -1,8 +1,10 @@
 package com.example.maktab.module.book.service
 
-import com.example.maktab.module.book.BookRepository
+import com.example.maktab.module.book.dto.BookDTO
+import com.example.maktab.module.book.entity.BookEntity
+import com.example.maktab.module.book.repository.BookRepository
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -11,17 +13,61 @@ class BookService(
 ) {
     private val logger = LoggerFactory.getLogger(BookService::class.simpleName)
 
-    fun createBook(): String {
-        logger.info("New Book Created with ID 1.");
-        return "Book Created Successfully with ID 1"
+    fun createBook(createDto: BookDTO.Request.Create): BookDTO.Response.Created {
+        val book = bookRepository.save(createDto.let {
+            BookEntity(
+                id = "",
+                title = it.title,
+                description = it.description,
+                price = it.price,
+            )
+        })
+
+        logger.info("Book created with id ${book.id}")
+
+        return book.let {
+            BookDTO.Response.Created(
+                id = it.id,
+                title = it.title,
+                description = it.description,
+                price = it.price
+            )
+        }
     }
 
-    fun getBook(): String {
-        return "Book-One"
+    fun getAllBooks(searchDto: BookDTO.Request.Search): BookDTO.Response.RetrievedAll {
+        val books = bookRepository.findAll()
+
+        return BookDTO.Response.RetrievedAll(items = books.map {
+            BookDTO.Response.RetrievedOne(
+                id = it.id,
+                title = it.title,
+                description = it.description,
+                price = it.price
+            )
+        })
     }
 
-    fun getBookById(id: String): String {
-        return "Book-$id"
+    fun getBook(): BookDTO.Response.RetrievedOne {
+        return BookDTO.Response.RetrievedOne(
+            id = "1",
+            title = "a",
+            description = "b",
+            price = 999,
+        )
+    }
+
+    fun getBookById(id: String): BookDTO.Response.RetrievedOne {
+        val book = bookRepository.findByIdOrNull(id)
+
+        return book?.let {
+            BookDTO.Response.RetrievedOne(
+                id = it.id,
+                title = it.title,
+                description = it.description,
+                price = it.price,
+            )
+        } ?: throw Exception("Invalid Id")
     }
 
     fun updateBook(id: String): String {
@@ -32,9 +78,5 @@ class BookService(
     fun deleteBook(id: String): String {
         logger.warn("Book $id removed.")
         return "The Book with ID $id Deleted Successfully"
-    }
-
-    fun getAllBooks(): List<String> {
-        return listOf("Book-One", "Book-Two")
     }
 }
