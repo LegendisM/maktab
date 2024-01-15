@@ -9,9 +9,10 @@ spring:
     username: root
     password: root
   jpa:
+    show-sql: true
     generate-ddl: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
 
 # Server configuration
 server:

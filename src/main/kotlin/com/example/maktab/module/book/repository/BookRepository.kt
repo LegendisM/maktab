@@ -1,9 +1,6 @@
 package com.example.maktab.module.book.repository
 
 import com.example.maktab.module.book.entity.BookEntity
-import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.jpa.repository.JpaRepository
 
-interface BookRepository : CrudRepository<BookEntity, String> {
-//    @Query("SELECT * FROM ") --> # Question
-}
+interface BookRepository : JpaRepository<BookEntity, String> {}

@@ -4,17 +4,17 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "book")
-data class BookEntity(
+class BookEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: String,
 
     @Column
-    val title: String,
+    var title: String,
 
     @Column
-    val description: String,
+    var description: String,
 
     @Column
-    val price: Int,
+    var price: Int,
 )

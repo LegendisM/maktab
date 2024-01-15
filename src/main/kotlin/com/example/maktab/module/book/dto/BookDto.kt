@@ -2,44 +2,38 @@ package com.example.maktab.module.book.dto
 
 import jakarta.validation.constraints.*
 import org.hibernate.validator.constraints.Length
+import org.springframework.lang.Nullable
 import java.awt.print.Book
 
 object BookDTO {
     object Request {
         data class Create(
-            @NotEmpty
-            @Length(min = 1, max = 255)
+            @field:NotEmpty
+            @field:Length(min = 1, max = 255)
             val title: String,
 
-            @Length(max = 512)
+            @field:Length(max = 512)
             val description: String,
 
-            @Min(0)
+            @field:Min(0)
             val price: Int,
         )
 
         data class Update(
-            @NotEmpty
-            val id: String,
-
-            @NotEmpty
-            @Length(min = 1, max = 255)
+            @field:NotEmpty
+            @field:Length(min = 1, max = 255)
             val title: String,
 
-            @Length(max = 512)
+            @field:Length(max = 512)
             val description: String,
 
             @Min(0)
             val price: Int,
         )
 
-        data class Remove(
-            @NotEmpty
-            val id: String,
-        )
-
         data class Search(
-            @Length(max = 255)
+            @field:NotEmpty
+            @field:Length(max = 255)
             val title: String,
         )
     }
