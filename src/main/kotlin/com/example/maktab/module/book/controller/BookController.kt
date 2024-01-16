@@ -1,5 +1,6 @@
 package com.example.maktab.module.book.controller
 
+import com.example.maktab.common.dto.ApiDTO
 import com.example.maktab.module.book.dto.BookDTO
 import com.example.maktab.module.book.service.BookService
 import jakarta.validation.Valid
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-//import org.springframework.web.bind.annotation.ResponseBody # Question
+import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
@@ -24,33 +25,50 @@ class BookController(
     val bookService: BookService,
 ) {
     @PostMapping
+    @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    fun createBook(@RequestBody @Valid createDto: BookDTO.Request.Create): BookDTO.Response.Created {
-        return bookService.createBook(createDto)
+    fun createBook(
+        @RequestBody @Valid createDto: BookDTO.Request.Create
+    ): ApiDTO.Response.Success<BookDTO.Response.Created> {
+        val result = bookService.createBook(createDto);
+
+        return ApiDTO.Response.Success(result, status = HttpStatus.CREATED)
     }
 
     @GetMapping
-    // @Valid @RequestParam searchDto: BookDTO.Request.Search #Question
-    fun getAllBooks(): BookDTO.Response.RetrievedAll {
-        return bookService.getAllBooks()
+    @ResponseBody
+    // @RequestParam @Valid searchDto: BookDTO.Request.Search #Question
+    fun getAllBooks(): ApiDTO.Response.Success<BookDTO.Response.RetrievedAll> {
+        val result = bookService.getAllBooks()
+
+        return ApiDTO.Response.Success(result)
     }
 
     @GetMapping("/{id}")
-    fun getBookById(@PathVariable("id") id: String): BookDTO.Response.RetrievedOne {
-        return bookService.getBookById(id)
+    @ResponseBody
+    fun getBookById(@PathVariable("id") id: String): ApiDTO.Response.Success<BookDTO.Response.RetrievedOne> {
+        val result = bookService.getBookById(id);
+
+        return ApiDTO.Response.Success(result)
     }
 
     @PatchMapping("/{id}")
+    @ResponseBody
     fun updateBook(
-        @Valid @PathVariable("id") @UUID id: String,
-        @Valid @RequestBody updateDto: BookDTO.Request.Update,
-    ): BookDTO.Response.Updated {
-        return bookService.updateBook(id, updateDto)
+        @PathVariable("id") @Valid @UUID id: String,
+        @RequestBody @Valid updateDto: BookDTO.Request.Update
+    ): ApiDTO.Response.Success<BookDTO.Response.Updated> {
+        val result = bookService.updateBook(id, updateDto);
+
+        return ApiDTO.Response.Success(result)
     }
 
     @DeleteMapping("/{id}")
+    @ResponseBody
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteBook(@Valid @PathVariable("id") @UUID id: String) {
+    fun deleteBook(@PathVariable("id") @Valid @UUID id: String): ApiDTO.Response.Success<String> {
         bookService.deleteBook(id)
+
+        return ApiDTO.Response.Success("Deleted Successfully")
     }
 }

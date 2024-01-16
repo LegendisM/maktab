@@ -16,7 +16,7 @@ object BookDTO {
             val description: String,
 
             @field:Min(0)
-            val price: Int,
+            val price: Int
         )
 
         data class Update(
@@ -28,13 +28,13 @@ object BookDTO {
             val description: String,
 
             @Min(0)
-            val price: Int,
+            val price: Int
         )
 
         data class Search(
             @field:NotEmpty
             @field:Length(max = 255)
-            val title: String,
+            val title: String
         )
     }
 
@@ -43,29 +43,29 @@ object BookDTO {
             val id: String,
             val title: String,
             val description: String,
-            val price: Int,
+            val price: Int
         )
 
         data class Updated(
             val id: String,
             val title: String,
             val description: String,
-            val price: Int,
+            val price: Int
         )
 
         data class Removed(
-            val id: String,
+            val id: String
         )
 
         data class RetrievedOne(
             val id: String,
             val title: String,
             val description: String,
-            val price: Int,
+            val price: Int
         )
 
         data class RetrievedAll(
-            val items: List<RetrievedOne>,
+            val items: List<RetrievedOne>
         )
 
     }

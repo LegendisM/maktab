@@ -1,5 +1,6 @@
 package com.example.maktab.module.book.service
 
+import com.example.maktab.common.exception.ApiError
 import com.example.maktab.module.book.dto.BookDTO
 import com.example.maktab.module.book.entity.BookEntity
 import com.example.maktab.module.book.repository.BookRepository
@@ -20,7 +21,7 @@ class BookService(
                     id = "",
                     title = it.title,
                     description = it.description,
-                    price = it.price,
+                    price = it.price
                 )
             }
         )
@@ -46,21 +47,21 @@ class BookService(
                     id = it.id,
                     title = it.title,
                     description = it.description,
-                    price = it.price,
+                    price = it.price
                 )
             }
         )
     }
 
     fun getBook(id: String): BookDTO.Response.RetrievedOne {
-        val book = bookRepository.findByIdOrNull(id) ?: throw Exception("Invalid Book Id")
+        val book = bookRepository.findByIdOrNull(id) ?: throw ApiError.NotFound("Invalid Book Id")
 
         return book.let {
             BookDTO.Response.RetrievedOne(
                 id = it.id,
                 title = it.title,
                 description = it.description,
-                price = it.price,
+                price = it.price
             )
         }
     }
@@ -73,13 +74,13 @@ class BookService(
                 id = it.id,
                 title = it.title,
                 description = it.description,
-                price = it.price,
+                price = it.price
             )
-        } ?: throw Exception("Invalid Id")
+        } ?: throw ApiError.NotFound("Invalid Id")
     }
 
     fun updateBook(id: String, updateDto: BookDTO.Request.Update): BookDTO.Response.Updated {
-        val book = bookRepository.findByIdOrNull(id) ?: throw Exception("Invalid Book Id")
+        val book = bookRepository.findByIdOrNull(id) ?: throw ApiError.NotFound("Invalid Book Id")
 
         book.apply {
             updateDto.let {
@@ -98,13 +99,13 @@ class BookService(
                 id = it.id,
                 title = it.title,
                 description = it.description,
-                price = it.price,
+                price = it.price
             )
         }
     }
 
     fun deleteBook(id: String) {
-        val book = bookRepository.findByIdOrNull(id) ?: throw Exception("Invalid Book Id")
+        val book = bookRepository.findByIdOrNull(id) ?: throw ApiError.NotFound("Invalid Book Id")
 
         bookRepository.delete(book)
 

@@ -16,5 +16,5 @@ class BookEntity(
     var description: String,
 
     @Column
-    var price: Int,
+    var price: Int
 )
