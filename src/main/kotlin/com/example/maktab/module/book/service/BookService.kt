@@ -1,111 +1,81 @@
 package com.example.maktab.module.book.service
 
 import com.example.maktab.common.exception.ApiError
-import com.example.maktab.module.book.dto.BookDTO
+import com.example.maktab.module.book.dto.BookDto
+import com.example.maktab.module.book.dto.CreateBookRequestDto
+import com.example.maktab.module.book.dto.FilterBookRequestDto
+import com.example.maktab.module.book.dto.UpdateBookRequestDto
 import com.example.maktab.module.book.entity.BookEntity
+import com.example.maktab.module.book.mapper.BookMapper
 import com.example.maktab.module.book.repository.BookRepository
+import com.example.maktab.module.book.specification.BookSpecification
+import org.hibernate.query.Order
 import org.slf4j.LoggerFactory
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class BookService(
     val bookRepository: BookRepository,
+    val bookMapper: BookMapper,
 ) {
     private val logger = LoggerFactory.getLogger(BookService::class.simpleName)
 
-    fun createBook(createDto: BookDTO.Request.Create): BookDTO.Response.Created {
+    @Transactional
+    fun createBook(createDto: CreateBookRequestDto): BookDto {
         val book = bookRepository.save(
-            createDto.let {
-                BookEntity(
-                    id = "",
-                    title = it.title,
-                    description = it.description,
-                    price = it.price
-                )
-            }
+            bookMapper.fromCreateDtoToEntity(createDto)
         )
 
         logger.info("Book created with id ${book.id}")
 
-        return book.let {
-            BookDTO.Response.Created(
-                id = it.id,
-                title = it.title,
-                description = it.description,
-                price = it.price
-            )
-        }
+        return bookMapper.toDto(book)
     }
 
-    fun getAllBooks(): BookDTO.Response.RetrievedAll {
-        val books = bookRepository.findAll()
+    @Transactional(readOnly = true)
+    fun getAllBooks(filterDto: FilterBookRequestDto): List<BookDto> {
+        val spec = BookSpecification(filterDto)
+        val books = bookRepository.findAll(spec)
 
-        return BookDTO.Response.RetrievedAll(
-            items = books.map {
-                BookDTO.Response.RetrievedOne(
-                    id = it.id,
-                    title = it.title,
-                    description = it.description,
-                    price = it.price
-                )
-            }
-        )
+        return bookMapper.toDto(books)
     }
 
-    fun getBook(id: String): BookDTO.Response.RetrievedOne {
-        val book = bookRepository.findByIdOrNull(id) ?: throw ApiError.NotFound("Invalid Book Id")
+    fun getBook(id: String): BookDto {
+        val book = this.getBookByIdOrThrow(id)
 
-        return book.let {
-            BookDTO.Response.RetrievedOne(
-                id = it.id,
-                title = it.title,
-                description = it.description,
-                price = it.price
-            )
-        }
+        return bookMapper.toDto(book)
     }
 
-    fun getBookById(id: String): BookDTO.Response.RetrievedOne {
-        val book = bookRepository.findByIdOrNull(id)
+    fun getBookById(id: String): BookDto {
+        val book = this.getBookByIdOrThrow(id)
 
-        return book?.let {
-            BookDTO.Response.RetrievedOne(
-                id = it.id,
-                title = it.title,
-                description = it.description,
-                price = it.price
-            )
-        } ?: throw ApiError.NotFound("Invalid Id")
+        return bookMapper.toDto(book)
     }
 
-    fun updateBook(id: String, updateDto: BookDTO.Request.Update): BookDTO.Response.Updated {
-        val book = bookRepository.findByIdOrNull(id) ?: throw ApiError.NotFound("Invalid Book Id")
+    fun getBookByIdOrThrow(id: String): BookEntity {
+        return bookRepository.findById(id).orElseThrow { ApiError.NotFound("Invalid Id") }
+    }
+
+    @Transactional
+    fun updateBook(id: String, updateDto: UpdateBookRequestDto): BookDto {
+        val book = this.getBookByIdOrThrow(id)
 
         book.apply {
-            updateDto.let {
-                this.title = it.title
-                this.description = it.description
-                this.price = it.price
-            }
+            this.title = updateDto.title
+            this.description = updateDto.description
+            this.price = updateDto.price
         }
 
         bookRepository.save(book)
 
         logger.info("The book $id updated successfully.")
 
-        return book.let {
-            BookDTO.Response.Updated(
-                id = it.id,
-                title = it.title,
-                description = it.description,
-                price = it.price
-            )
-        }
+        return bookMapper.toDto(book)
     }
 
+    @Transactional
     fun deleteBook(id: String) {
-        val book = bookRepository.findByIdOrNull(id) ?: throw ApiError.NotFound("Invalid Book Id")
+        val book = this.getBookByIdOrThrow(id)
 
         bookRepository.delete(book)
 
