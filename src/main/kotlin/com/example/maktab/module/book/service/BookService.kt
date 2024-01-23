@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class BookService(
     val bookRepository: BookRepository,
-    val bookMapper: BookMapper,
+    val bookMapper: BookMapper
 ) {
     private val logger = LoggerFactory.getLogger(BookService::class.simpleName)
 
@@ -41,24 +41,24 @@ class BookService(
     }
 
     fun getBook(id: String): BookDto {
-        val book = this.getBookByIdOrThrow(id)
+        val book = findByIdOrThrow(id)
 
         return bookMapper.toDto(book)
     }
 
     fun getBookById(id: String): BookDto {
-        val book = this.getBookByIdOrThrow(id)
+        val book = findByIdOrThrow(id)
 
         return bookMapper.toDto(book)
     }
 
-    fun getBookByIdOrThrow(id: String): BookEntity {
+    fun findByIdOrThrow(id: String): BookEntity {
         return bookRepository.findById(id).orElseThrow { ApiError.NotFound("Invalid Id") }
     }
 
     @Transactional
     fun updateBook(id: String, updateDto: UpdateBookRequestDto): BookDto {
-        val book = this.getBookByIdOrThrow(id)
+        val book = findByIdOrThrow(id)
 
         book.apply {
             this.title = updateDto.title
@@ -75,7 +75,7 @@ class BookService(
 
     @Transactional
     fun deleteBook(id: String) {
-        val book = this.getBookByIdOrThrow(id)
+        val book = findByIdOrThrow(id)
 
         bookRepository.delete(book)
 

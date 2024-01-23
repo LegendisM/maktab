@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/v1/book")
+@RequestMapping("/api/v1/book")
 class BookController(
-    val bookService: BookService,
+    val bookService: BookService
 ) {
     @PostMapping
     fun createBook(
@@ -40,7 +40,7 @@ class BookController(
     }
 
     @GetMapping("/{id}")
-    fun getBookById(@PathVariable("id") id: String): ApiDTO.Response.Success<BookDto> {
+    fun getBookById(@PathVariable("id") @Valid @UUID id: String): ApiDTO.Response.Success<BookDto> {
         val result = bookService.getBookById(id);
 
         return ApiDTO.Response.Success(result)
