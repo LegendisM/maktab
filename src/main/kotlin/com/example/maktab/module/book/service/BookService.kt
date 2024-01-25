@@ -1,15 +1,15 @@
 package com.example.maktab.module.book.service
 
 import com.example.maktab.common.exception.ApiError
-import com.example.maktab.module.book.dto.BookDto
-import com.example.maktab.module.book.dto.CreateBookRequestDto
-import com.example.maktab.module.book.dto.FilterBookRequestDto
-import com.example.maktab.module.book.dto.UpdateBookRequestDto
+import com.example.maktab.module.book.dto.BookDTO
+import com.example.maktab.module.book.dto.CreateBookRequestDTO
+import com.example.maktab.module.book.dto.FilterBookRequestDTO
+import com.example.maktab.module.book.dto.UpdateBookRequestDTO
 import com.example.maktab.module.book.entity.BookEntity
 import com.example.maktab.module.book.mapper.BookMapper
 import com.example.maktab.module.book.repository.BookRepository
 import com.example.maktab.module.book.specification.BookSpecification
-import org.hibernate.query.Order
+import com.example.maktab.module.category.entity.CategoryEntity
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,10 +22,22 @@ class BookService(
     private val logger = LoggerFactory.getLogger(BookService::class.simpleName)
 
     @Transactional
-    fun createBook(createDto: CreateBookRequestDto): BookDto {
-        val book = bookRepository.save(
-            bookMapper.fromCreateDtoToEntity(createDto)
-        )
+    fun createBook(createDto: CreateBookRequestDTO): BookDTO {
+        // TODO: use categoryService to retrieve categories instances from IDs
+        val book = bookRepository.save(createDto.let {
+            BookEntity(
+                id = "",
+                title = it.title,
+                description = it.description,
+                price = it.price,
+                categories = it.categories.map { categoryId ->
+                    CategoryEntity(
+                        id = categoryId,
+                        title = ""
+                    )
+                }.toMutableSet()
+            )
+        })
 
         logger.info("Book created with id ${book.id}")
 
@@ -33,20 +45,20 @@ class BookService(
     }
 
     @Transactional(readOnly = true)
-    fun getAllBooks(filterDto: FilterBookRequestDto): List<BookDto> {
+    fun getAllBooks(filterDto: FilterBookRequestDTO): List<BookDTO> {
         val spec = BookSpecification(filterDto)
         val books = bookRepository.findAll(spec)
 
         return bookMapper.toDto(books)
     }
 
-    fun getBook(id: String): BookDto {
+    fun getBook(id: String): BookDTO {
         val book = findByIdOrThrow(id)
 
         return bookMapper.toDto(book)
     }
 
-    fun getBookById(id: String): BookDto {
+    fun getBookById(id: String): BookDTO {
         val book = findByIdOrThrow(id)
 
         return bookMapper.toDto(book)
@@ -57,7 +69,7 @@ class BookService(
     }
 
     @Transactional
-    fun updateBook(id: String, updateDto: UpdateBookRequestDto): BookDto {
+    fun updateBook(id: String, updateDto: UpdateBookRequestDTO): BookDTO {
         val book = findByIdOrThrow(id)
 
         book.apply {

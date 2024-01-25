@@ -1,13 +1,9 @@
 package com.example.maktab.module.book.dto
 
 import jakarta.validation.constraints.Min
-import jakarta.validation.constraints.NotEmpty
 import org.hibernate.validator.constraints.Length
 
-data class BookDto(
-    @field:NotEmpty
-    val id: String,
-
+data class CreateBookRequestDTO(
     @field:Length(min = 1, max = 255)
     val title: String,
 
@@ -15,5 +11,7 @@ data class BookDto(
     val description: String,
 
     @field:Min(0)
-    val price: Int
+    val price: Int,
+
+    val categories: Set<String>
 )

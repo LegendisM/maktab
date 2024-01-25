@@ -8,7 +8,7 @@ import com.example.maktab.module.book.entity.BookEntity
 import org.springframework.data.jpa.domain.Specification
 
 class BookSpecification(private val filter: FilterBookRequestDto) : BaseSpecification<BookEntity> {
-    override fun build() = (filterTitle(filter.title) * filterMinimumPrice() + filterMaximumPrice())
+    override fun build() = (filterTitle(filter.title) + filterMinimumPrice() + filterMaximumPrice())
 
     companion object {
         fun filterTitle(title: String?) = Specification<BookEntity> { root, query, builder ->

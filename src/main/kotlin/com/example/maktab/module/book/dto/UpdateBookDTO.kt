@@ -2,15 +2,14 @@ package com.example.maktab.module.book.dto
 
 import jakarta.validation.constraints.Min
 import org.hibernate.validator.constraints.Length
-import org.springframework.lang.Nullable
 
-data class FilterBookRequestDto(
+data class UpdateBookRequestDTO(
     @field:Length(min = 1, max = 255)
-    val title: String?,
+    val title: String,
+
+    @field:Length(min = 1, max = 512)
+    val description: String,
 
     @field:Min(0)
-    val minimumPrice: Int?,
-
-    @field:Min(0)
-    val maximumPrice: Int?
+    val price: Int
 )
