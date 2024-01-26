@@ -4,6 +4,7 @@ import com.example.maktab.common.exception.ApiError
 import com.example.maktab.common.util.toSlug
 import com.example.maktab.module.category.dto.CategoryDTO
 import com.example.maktab.module.category.dto.CreateCategoryRequestDTO
+import com.example.maktab.module.category.dto.FilterCategoryRequestDTO
 import com.example.maktab.module.category.dto.UpdateCategoryRequestDTO
 import com.example.maktab.module.category.entity.CategoryEntity
 import com.example.maktab.module.category.mapper.CategoryMapper
@@ -41,10 +42,14 @@ class CategoryService(
     }
 
     @Transactional(readOnly = true)
-    fun getAllCategories(): List<CategoryDTO> {
+    fun getAllCategories(filterDto: FilterCategoryRequestDTO): List<CategoryDTO> {
         val categories = categoryRepository.findAll()
 
         return categoryMapper.toDto(categories)
+    }
+
+    fun findAllByIds(ids: Set<String>): List<CategoryEntity> {
+        return categoryRepository.findAllById(ids)
     }
 
     fun getCategoryById(id: String): CategoryDTO {

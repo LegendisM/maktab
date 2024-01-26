@@ -3,21 +3,21 @@ package com.example.maktab.module.book.specification
 import com.example.maktab.common.specification.BaseSpecification
 import com.example.maktab.common.util.plus
 import com.example.maktab.common.util.times
-import com.example.maktab.module.book.dto.FilterBookRequestDto
+import com.example.maktab.module.book.dto.FilterBookRequestDTO
 import com.example.maktab.module.book.entity.BookEntity
 import org.springframework.data.jpa.domain.Specification
 
-class BookSpecification(private val filter: FilterBookRequestDto) : BaseSpecification<BookEntity> {
+class BookSpecification(private val filter: FilterBookRequestDTO) : BaseSpecification<BookEntity> {
     override fun build() = (filterTitle(filter.title) + filterMinimumPrice() + filterMaximumPrice())
 
     companion object {
-        fun filterTitle(title: String?) = Specification<BookEntity> { root, query, builder ->
+        fun filterTitle(title: String?) = Specification<BookEntity> { root, _, builder ->
             if (title == null) return@Specification null
             builder.like(root.get(BookEntity::title.name), "%${title}%")
         }
     }
 
-    private fun filterMinimumPrice() = Specification<BookEntity> { root, query, builder ->
+    private fun filterMinimumPrice() = Specification<BookEntity> { root, _, builder ->
         if (filter.minimumPrice == null) return@Specification null
         builder.greaterThanOrEqualTo(root.get(BookEntity::price.name), filter.minimumPrice)
     }

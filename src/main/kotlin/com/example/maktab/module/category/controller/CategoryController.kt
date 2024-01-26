@@ -1,9 +1,10 @@
 package com.example.maktab.module.category.controller
 
 import com.example.maktab.common.dto.ApiDTO
-import com.example.maktab.module.category.dto.CategoryDto
-import com.example.maktab.module.category.dto.CreateCategoryRequestDto
-import com.example.maktab.module.category.dto.UpdateCategoryRequestDto
+import com.example.maktab.module.category.dto.CategoryDTO
+import com.example.maktab.module.category.dto.CreateCategoryRequestDTO
+import com.example.maktab.module.category.dto.FilterCategoryRequestDTO
+import com.example.maktab.module.category.dto.UpdateCategoryRequestDTO
 import com.example.maktab.module.category.service.CategoryService
 import jakarta.validation.Valid
 import org.hibernate.validator.constraints.UUID
@@ -18,28 +19,28 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/categories")
+@RequestMapping("/v1/categories")
 class CategoryController(
     val categoryService: CategoryService
 ) {
     @PostMapping
     fun createCategory(
-        @RequestBody @Valid createDto: CreateCategoryRequestDto
-    ): ApiDTO.Response.Success<CategoryDto> {
+        @RequestBody @Valid createDto: CreateCategoryRequestDTO
+    ): ApiDTO.Response.Success<CategoryDTO> {
         val result = categoryService.createCategory(createDto)
 
         return ApiDTO.Response.Success(result, status = HttpStatus.CREATED)
     }
 
     @PostMapping("/filter")
-    fun getAllCategories(): ApiDTO.Response.Success<List<CategoryDto>> {
-        val result = categoryService.getAllCategories()
+    fun getAllCategories(@RequestBody @Valid filterDto: FilterCategoryRequestDTO): ApiDTO.Response.Success<List<CategoryDTO>> {
+        val result = categoryService.getAllCategories(filterDto)
 
         return ApiDTO.Response.Success(result)
     }
 
     @GetMapping("/{id}")
-    fun getCategoryById(@PathVariable("id") id: String): ApiDTO.Response.Success<CategoryDto> {
+    fun getCategoryById(@PathVariable("id") id: String): ApiDTO.Response.Success<CategoryDTO> {
         val category = categoryService.getCategoryById(id)
 
         return ApiDTO.Response.Success(category)
@@ -48,8 +49,8 @@ class CategoryController(
     @PatchMapping("/{id}")
     fun updateCategory(
         @PathVariable("id") @Valid @UUID id: String,
-        @RequestBody @Valid updateDto: UpdateCategoryRequestDto
-    ): ApiDTO.Response.Success<CategoryDto> {
+        @RequestBody @Valid updateDto: UpdateCategoryRequestDTO
+    ): ApiDTO.Response.Success<CategoryDTO> {
         val result = categoryService.updateCategory(id, updateDto)
 
         return ApiDTO.Response.Success(result)

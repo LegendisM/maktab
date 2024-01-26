@@ -1,11 +1,11 @@
 package com.example.maktab.module.category.specification
 
 import com.example.maktab.common.specification.BaseSpecification
-import com.example.maktab.module.category.dto.FilterCategoryRequestDto
+import com.example.maktab.module.category.dto.FilterCategoryRequestDTO
 import com.example.maktab.module.category.entity.CategoryEntity
 import org.springframework.data.jpa.domain.Specification
 
-class CategorySpecification(private val filter: FilterCategoryRequestDto) : BaseSpecification<CategoryEntity> {
+class CategorySpecification(private val filter: FilterCategoryRequestDTO) : BaseSpecification<CategoryEntity> {
     override fun build() = (filterBySlug(filter.slug))
 
     companion object {

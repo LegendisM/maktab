@@ -9,7 +9,7 @@ import com.example.maktab.module.book.entity.BookEntity
 import com.example.maktab.module.book.mapper.BookMapper
 import com.example.maktab.module.book.repository.BookRepository
 import com.example.maktab.module.book.specification.BookSpecification
-import com.example.maktab.module.category.entity.CategoryEntity
+import com.example.maktab.module.category.service.CategoryService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -17,25 +17,24 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class BookService(
     val bookRepository: BookRepository,
-    val bookMapper: BookMapper
+    val bookMapper: BookMapper,
+    val categoryService: CategoryService,
 ) {
     private val logger = LoggerFactory.getLogger(BookService::class.simpleName)
 
     @Transactional
     fun createBook(createDto: CreateBookRequestDTO): BookDTO {
-        // TODO: use categoryService to retrieve categories instances from IDs
+        val categories = categoryService.findAllByIds(createDto.categories)
+
+        if (categories.isEmpty()) throw ApiError.BadRequest("At least one category is required")
+
         val book = bookRepository.save(createDto.let {
             BookEntity(
                 id = "",
                 title = it.title,
                 description = it.description,
                 price = it.price,
-                categories = it.categories.map { categoryId ->
-                    CategoryEntity(
-                        id = categoryId,
-                        title = ""
-                    )
-                }.toMutableSet()
+                categories = categories.toMutableSet()
             )
         })
 
@@ -71,11 +70,15 @@ class BookService(
     @Transactional
     fun updateBook(id: String, updateDto: UpdateBookRequestDTO): BookDTO {
         val book = findByIdOrThrow(id)
+        val categories = categoryService.findAllByIds(updateDto.categories)
+
+        if (categories.isEmpty()) throw ApiError.BadRequest("At least one category is required")
 
         book.apply {
             this.title = updateDto.title
             this.description = updateDto.description
             this.price = updateDto.price
+            this.categories = categories.toMutableSet()
         }
 
         bookRepository.save(book)

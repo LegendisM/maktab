@@ -4,6 +4,8 @@ import com.example.maktab.module.category.dto.CategoryDTO
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotEmpty
 import org.hibernate.validator.constraints.Length
+import java.sql.Timestamp
+import java.time.Instant
 
 data class BookDTO(
     @field:NotEmpty
@@ -17,6 +19,10 @@ data class BookDTO(
 
     @field:Min(0)
     val price: Int,
+
+    val createdAt: Instant,
+
+    val updatedAt: Instant,
 
     val categories: Set<CategoryDTO>
 )

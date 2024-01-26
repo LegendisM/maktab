@@ -1,10 +1,10 @@
 package com.example.maktab.module.book.controller
 
 import com.example.maktab.common.dto.ApiDTO
-import com.example.maktab.module.book.dto.BookDto
-import com.example.maktab.module.book.dto.CreateBookRequestDto
-import com.example.maktab.module.book.dto.FilterBookRequestDto
-import com.example.maktab.module.book.dto.UpdateBookRequestDto
+import com.example.maktab.module.book.dto.BookDTO
+import com.example.maktab.module.book.dto.CreateBookRequestDTO
+import com.example.maktab.module.book.dto.FilterBookRequestDTO
+import com.example.maktab.module.book.dto.UpdateBookRequestDTO
 import com.example.maktab.module.book.service.BookService
 import jakarta.validation.Valid
 import org.hibernate.validator.constraints.UUID
@@ -19,28 +19,28 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/book")
+@RequestMapping("/v1/book")
 class BookController(
     val bookService: BookService
 ) {
     @PostMapping
     fun createBook(
-        @RequestBody @Valid createDto: CreateBookRequestDto
-    ): ApiDTO.Response.Success<BookDto> {
+        @RequestBody @Valid createDto: CreateBookRequestDTO
+    ): ApiDTO.Response.Success<BookDTO> {
         val result = bookService.createBook(createDto);
 
         return ApiDTO.Response.Success(result, status = HttpStatus.CREATED)
     }
 
     @PostMapping("/filter")
-    fun getAllBooks(@RequestBody @Valid filterDto: FilterBookRequestDto): ApiDTO.Response.Success<List<BookDto>> {
+    fun getAllBooks(@RequestBody @Valid filterDto: FilterBookRequestDTO): ApiDTO.Response.Success<List<BookDTO>> {
         val result = bookService.getAllBooks(filterDto)
 
         return ApiDTO.Response.Success(result)
     }
 
     @GetMapping("/{id}")
-    fun getBookById(@PathVariable("id") @Valid @UUID id: String): ApiDTO.Response.Success<BookDto> {
+    fun getBookById(@PathVariable("id") @Valid @UUID id: String): ApiDTO.Response.Success<BookDTO> {
         val result = bookService.getBookById(id);
 
         return ApiDTO.Response.Success(result)
@@ -49,8 +49,8 @@ class BookController(
     @PatchMapping("/{id}")
     fun updateBook(
         @PathVariable("id") @Valid @UUID id: String,
-        @RequestBody @Valid updateDto: UpdateBookRequestDto
-    ): ApiDTO.Response.Success<BookDto> {
+        @RequestBody @Valid updateDto: UpdateBookRequestDTO
+    ): ApiDTO.Response.Success<BookDTO> {
         val result = bookService.updateBook(id, updateDto);
 
         return ApiDTO.Response.Success(result)

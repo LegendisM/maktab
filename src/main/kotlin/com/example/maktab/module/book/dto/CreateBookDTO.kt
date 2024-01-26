@@ -1,6 +1,7 @@
 package com.example.maktab.module.book.dto
 
 import jakarta.validation.constraints.Min
+import jakarta.validation.constraints.Size
 import org.hibernate.validator.constraints.Length
 
 data class CreateBookRequestDTO(
@@ -13,5 +14,6 @@ data class CreateBookRequestDTO(
     @field:Min(0)
     val price: Int,
 
+    @field:Size(min = 1, max = 10)
     val categories: Set<String>
 )
