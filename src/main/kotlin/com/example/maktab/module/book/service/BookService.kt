@@ -45,8 +45,7 @@ class BookService(
 
     @Transactional(readOnly = true)
     fun getAllBooks(filterDto: FilterBookRequestDTO): List<BookDTO> {
-        val spec = BookSpecification(filterDto)
-        val books = bookRepository.findAll(spec)
+        val books = bookRepository.findAll(BookSpecification.filter(filterDto))
 
         return bookMapper.toDto(books)
     }
