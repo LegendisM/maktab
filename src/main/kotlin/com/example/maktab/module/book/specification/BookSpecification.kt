@@ -12,14 +12,14 @@ object BookSpecification {
             filterByTitle(filterDto.title)
                 .and(filterByMaximumPrice(filterDto.maximumPrice))
                 .and(filterByMinimumPrice(filterDto.minimumPrice))
-                .and(filterByCategories(filterDto.categories))
+                .and(filterByCategory(filterDto.category))
         )
     }
 
     fun filterByTitle(title: String?) = Specification<BookEntity> { root, _, builder ->
         if (title == null) return@Specification null
 
-        builder.like(root.get<String>(BookEntity::title.name), "%$title%")
+        builder.like(root.get(BookEntity::title.name), "%$title%")
     }
 
     fun filterByMinimumPrice(minimumPrice: Int?) = Specification<BookEntity> { root, _, builder ->
@@ -34,11 +34,16 @@ object BookSpecification {
         builder.lessThanOrEqualTo(root.get(BookEntity::price.name), maximumPrice)
     }
 
-    fun filterByCategories(categories: Set<String>?) = Specification<BookEntity> { root, _, builder ->
-        if (categories == null) return@Specification null
+    fun filterByCategory(category: String?) = Specification<BookEntity> { root, _, builder ->
+        if (category == null) return@Specification null
 
         val bookCategories = root.join<CategoryEntity, BookEntity>(BookEntity::categories.name)
 
-        bookCategories.get<String>(CategoryEntity::id.name).`in`(categories)
+        builder.like(
+            builder.lower(
+                bookCategories.get(CategoryEntity::title.name)
+            ),
+            "%$category%"
+        )
     }
 }
