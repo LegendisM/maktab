@@ -30,7 +30,6 @@ class BookService(
 
         val book = bookRepository.save(createDto.let {
             BookEntity(
-                id = "",
                 title = it.title,
                 description = it.description,
                 price = it.price,

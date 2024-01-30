@@ -13,7 +13,6 @@ interface CategoryMapper {
     fun toDto(entities: List<CategoryEntity>): List<CategoryDTO>
     fun toEntity(dtos: List<CategoryDTO>): List<CategoryEntity>
 
-    @Mapping(target = "id", constant = "EMPTY")
     @Mapping(target = "slug", constant = "EMPTY")
     fun fromCreateDtoToEntity(create: CreateCategoryRequestDTO): CategoryEntity
 }
