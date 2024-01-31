@@ -5,8 +5,9 @@ import com.example.maktab.module.category.dto.CreateCategoryRequestDTO
 import com.example.maktab.module.category.entity.CategoryEntity
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
+import org.mapstruct.ReportingPolicy
 
-@Mapper
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 interface CategoryMapper {
     fun toDto(entity: CategoryEntity): CategoryDTO
     fun toEntity(dto: CategoryDTO): CategoryEntity

@@ -1,6 +1,7 @@
 package com.example.maktab.module.category.controller
 
 import com.example.maktab.common.dto.ApiDTO
+import com.example.maktab.common.dto.PaginationResponseDTO
 import com.example.maktab.module.category.dto.CategoryDTO
 import com.example.maktab.module.category.dto.CreateCategoryRequestDTO
 import com.example.maktab.module.category.dto.FilterCategoryRequestDTO
@@ -8,6 +9,7 @@ import com.example.maktab.module.category.dto.UpdateCategoryRequestDTO
 import com.example.maktab.module.category.service.CategoryService
 import jakarta.validation.Valid
 import org.hibernate.validator.constraints.UUID
+import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -33,8 +35,11 @@ class CategoryController(
     }
 
     @PostMapping("/filter")
-    fun getAllCategories(@RequestBody @Valid filterDto: FilterCategoryRequestDTO): ApiDTO.Response.Success<List<CategoryDTO>> {
-        val result = categoryService.getAllCategories(filterDto)
+    fun getAllCategories(
+        @RequestBody @Valid filterDto: FilterCategoryRequestDTO,
+        page: Pageable
+    ): ApiDTO.Response.Success<PaginationResponseDTO<CategoryDTO>> {
+        val result = categoryService.getAllCategories(filterDto, page)
 
         return ApiDTO.Response.Success(result)
     }

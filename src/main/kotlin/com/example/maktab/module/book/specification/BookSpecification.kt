@@ -43,7 +43,7 @@ object BookSpecification {
             builder.lower(
                 bookCategories.get(CategoryEntity::title.name)
             ),
-            "%$category%"
+            "%${category.lowercase()}%"
         )
     }
 }

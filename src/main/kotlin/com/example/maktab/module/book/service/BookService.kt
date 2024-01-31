@@ -1,5 +1,6 @@
 package com.example.maktab.module.book.service
 
+import com.example.maktab.common.dto.PaginationResponseDTO
 import com.example.maktab.common.exception.ApiError
 import com.example.maktab.module.book.dto.BookDTO
 import com.example.maktab.module.book.dto.CreateBookRequestDTO
@@ -11,6 +12,7 @@ import com.example.maktab.module.book.repository.BookRepository
 import com.example.maktab.module.book.specification.BookSpecification
 import com.example.maktab.module.category.service.CategoryService
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -43,10 +45,15 @@ class BookService(
     }
 
     @Transactional(readOnly = true)
-    fun getAllBooks(filterDto: FilterBookRequestDTO): List<BookDTO> {
-        val books = bookRepository.findAll(BookSpecification.filter(filterDto))
+    fun getAllBooks(filterDto: FilterBookRequestDTO, page: Pageable): PaginationResponseDTO<BookDTO> {
+        val books = bookRepository.findAll(BookSpecification.filter(filterDto), page)
 
-        return bookMapper.toDto(books)
+        return PaginationResponseDTO(
+            items = bookMapper.toDto(books.toList()),
+            size = books.size,
+            page = page.pageNumber,
+            total = books.totalPages
+        )
     }
 
     fun getBook(id: String): BookDTO {
