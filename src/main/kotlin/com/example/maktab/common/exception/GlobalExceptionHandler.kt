@@ -1,10 +1,7 @@
 package com.example.maktab.common.exception
 
 import com.example.maktab.common.dto.ApiDTO
-import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
-import org.springframework.http.HttpStatusCode
-import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -12,8 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.server.ResponseStatusException
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
-import java.util.stream.Collectors
 
 @ControllerAdvice
 class GlobalExceptionHandler {
@@ -34,7 +29,7 @@ class GlobalExceptionHandler {
         request: WebRequest
     ): ApiDTO.Response.Error {
         return ApiDTO.Response.Error(
-            message = exception.message ?: "Argument Type Mismatch",
+            message = "${exception.name} should be a valid ${exception.requiredType?.simpleName ?: "field"} and ${exception.value} isn't",
             status = HttpStatus.BAD_REQUEST
         )
     }

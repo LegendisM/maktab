@@ -2,6 +2,7 @@ package com.example.maktab.module.category.dto
 
 import jakarta.validation.constraints.NotEmpty
 import org.hibernate.validator.constraints.Length
+import java.util.Date
 
 data class CategoryDTO(
     @field:NotEmpty
@@ -11,5 +12,9 @@ data class CategoryDTO(
     val title: String,
 
     @field:Length(min = 1)
-    val slug: String
+    val slug: String,
+
+    val createdAt: Date? = null,
+
+    val updatedAt: Date? = null,
 )

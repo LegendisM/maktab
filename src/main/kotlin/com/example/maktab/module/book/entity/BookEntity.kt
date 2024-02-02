@@ -5,6 +5,8 @@ import com.example.maktab.module.category.entity.CategoryEntity
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
+import java.sql.Date
+import java.sql.Timestamp
 import java.time.Instant
 
 @Entity
