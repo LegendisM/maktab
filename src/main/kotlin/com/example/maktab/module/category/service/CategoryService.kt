@@ -48,7 +48,7 @@ class CategoryService(
         val categories = categoryRepository.findAll(CategorySpecification.filter(filterDto), page)
 
         return PaginationResponseDTO(
-            items = categoryMapper.toDto(categories.toList()),
+            items = categoryMapper.toDtos(categories.toList()),
             size = categories.size,
             page = page.pageNumber,
             total = categories.totalPages

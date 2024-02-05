@@ -9,6 +9,6 @@ import org.mapstruct.ReportingPolicy
 interface BookMapper {
     fun toDto(entity: BookEntity): BookDTO
     fun toEntity(dto: BookDTO): BookEntity
-    fun toDto(entities: List<BookEntity>): List<BookDTO>
-    fun toEntity(dtos: List<BookDTO>): List<BookEntity>
+    fun toDtos(entities: List<BookEntity>): List<BookDTO>
+    fun toEntities(dtos: List<BookDTO>): List<BookEntity>
 }

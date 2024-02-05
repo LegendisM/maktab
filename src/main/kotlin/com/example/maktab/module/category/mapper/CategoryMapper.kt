@@ -11,8 +11,8 @@ import org.mapstruct.ReportingPolicy
 interface CategoryMapper {
     fun toDto(entity: CategoryEntity): CategoryDTO
     fun toEntity(dto: CategoryDTO): CategoryEntity
-    fun toDto(entities: List<CategoryEntity>): List<CategoryDTO>
-    fun toEntity(dtos: List<CategoryDTO>): List<CategoryEntity>
+    fun toDtos(entities: List<CategoryEntity>): List<CategoryDTO>
+    fun toEntities(dtos: List<CategoryDTO>): List<CategoryEntity>
 
     @Mapping(target = "slug", constant = "EMPTY")
     fun fromCreateDtoToEntity(create: CreateCategoryRequestDTO): CategoryEntity

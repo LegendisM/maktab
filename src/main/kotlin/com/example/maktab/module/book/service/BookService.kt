@@ -49,7 +49,7 @@ class BookService(
         val books = bookRepository.findAll(BookSpecification.filter(filterDto), page)
 
         return PaginationResponseDTO(
-            items = bookMapper.toDto(books.toList()),
+            items = bookMapper.toDtos(books.toList()),
             size = books.size,
             page = page.pageNumber,
             total = books.totalPages
