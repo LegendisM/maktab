@@ -23,7 +23,7 @@ class BookEntity(
 
     // TODO: relate to Resource entity
     @Column
-    val file: String,
+    val file: String = "",
 
     @Version
     val version: Long = 0L,

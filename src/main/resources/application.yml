@@ -21,5 +21,10 @@ server:
 
 # Secret values
 secret:
-  my-key: my-value
-  jwt-secret: example
+  jwt:
+    access-token:
+      key: my-ac-key
+      expire: 9200
+    refresh-token:
+      key: my-rf-key
+      expire: 9200

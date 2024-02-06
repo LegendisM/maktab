@@ -20,6 +20,10 @@ server:
 
 # Secret values
 secret:
-  my-key: my-value
-  jwt-secret: better-example-key
-
+  jwt:
+    access-token:
+      key: ${JWT_ACCESS_TOKEN_KEY}
+      expire: ${JWT_ACCESS_TOKEN_EXPIRE}
+    refresh-token:
+      key: ${JWT_REFRESH_TOKEN_KEY}
+      expire: ${JWT_REFRESH_TOKEN_EXPIRE}

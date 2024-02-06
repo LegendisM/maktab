@@ -23,7 +23,7 @@ class AuthAccountService(
         }
 
         if (createModel.password != null) {
-            createModel.password = createModel.password
+            createModel.password = createModel.password // TODO: encrypt
         }
 
         if (createModel.email != null) {

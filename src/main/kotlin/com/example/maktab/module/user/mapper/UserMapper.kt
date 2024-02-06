@@ -15,7 +15,7 @@ interface UserMapper {
     fun toModel(entity: UserEntity): UserModel
     fun toDtos(entities: List<UserEntity>): List<UserDTO>
     fun toEntities(dtos: List<UserDTO>): List<UserEntity>
-    fun toEntities(models: List<UserModel>): List<UserModel>
+    fun fromModelsToEntities(models: List<UserModel>): List<UserEntity>
     fun toModels(entities: List<UserEntity>): List<UserModel>
 
     fun fromCreateModelToEntity(createModel: CreateUserModel): UserEntity
