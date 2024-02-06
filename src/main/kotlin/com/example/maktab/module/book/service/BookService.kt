@@ -56,18 +56,21 @@ class BookService(
         )
     }
 
+    @Transactional(readOnly = true)
     fun getBook(id: String): BookDTO {
         val book = findByIdOrThrow(id)
 
         return bookMapper.toDto(book)
     }
 
+    @Transactional(readOnly = true)
     fun getBookById(id: String): BookDTO {
         val book = findByIdOrThrow(id)
 
         return bookMapper.toDto(book)
     }
 
+    @Transactional(readOnly = true)
     fun findByIdOrThrow(id: String): BookEntity {
         return bookRepository.findById(id).orElseThrow { ApiError.NotFound("Invalid Id") }
     }

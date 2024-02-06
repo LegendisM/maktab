@@ -55,16 +55,19 @@ class CategoryService(
         )
     }
 
+    @Transactional(readOnly = true)
     fun findAllByIds(ids: Set<String>): List<CategoryEntity> {
         return categoryRepository.findAllById(ids)
     }
 
+    @Transactional(readOnly = true)
     fun getCategoryById(id: String): CategoryDTO {
         val category = findByIdOrThrow(id)
 
         return categoryMapper.toDto(category)
     }
 
+    @Transactional(readOnly = true)
     fun findByIdOrThrow(id: String): CategoryEntity {
         return categoryRepository.findById(id).orElseThrow { ApiError.NotFound("Invalid Id") }
     }
@@ -84,6 +87,7 @@ class CategoryService(
         return categoryMapper.toDto(category)
     }
 
+    @Transactional
     fun deleteCategory(id: String) {
         val category = findByIdOrThrow(id)
 
