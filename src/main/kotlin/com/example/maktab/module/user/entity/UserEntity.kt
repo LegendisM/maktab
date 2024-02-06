@@ -13,15 +13,15 @@ class UserEntity(
     @Column(unique = true, nullable = false)
     var username: String,
 
-    @Column(unique = true, nullable = true)
-    var email: String,
+    @Column
+    var email: String?,
 
-    @Column(unique = true, nullable = true)
-    var phone: String,
+    @Column
+    var phone: String?,
 
     @Column
     @JsonIgnore
-    var password: String,
+    var password: String?,
 
     @Version
     val version: Long = 0L

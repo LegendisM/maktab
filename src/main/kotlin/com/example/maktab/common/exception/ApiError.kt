@@ -14,6 +14,11 @@ object ApiError {
         val status: HttpStatus = HttpStatus.BAD_REQUEST
     ) : ResponseStatusException(status, message)
 
+    data class Conflict(
+        override val message: String = "Conflict",
+        val status: HttpStatus = HttpStatus.CONFLICT
+    ) : ResponseStatusException(status, message)
+
     data class NotFound(
         override val message: String = "Not Found Error",
         val status: HttpStatus = HttpStatus.NOT_FOUND

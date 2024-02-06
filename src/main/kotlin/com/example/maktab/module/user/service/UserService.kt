@@ -11,8 +11,10 @@ import com.example.maktab.module.user.repository.UserRepository
 import com.example.maktab.module.user.specification.UserSpecification
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.Optional
 
 @Service
 class UserService(
@@ -42,6 +44,11 @@ class UserService(
             page = page.pageNumber,
             total = users.totalPages
         )
+    }
+
+    @Transactional(readOnly = true)
+    fun findOne(specification: Specification<UserEntity>): Optional<UserEntity> {
+        return userRepository.findOne(specification)
     }
 
     @Transactional(readOnly = true)

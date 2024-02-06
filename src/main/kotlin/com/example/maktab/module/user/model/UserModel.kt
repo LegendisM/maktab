@@ -6,6 +6,7 @@ package com.example.maktab.module.user.model
 * benefit: to have basic structure in transfers between system services
 * */
 data class UserModel(
+    val id: String,
     val username: String,
     val email: String,
     val phone: String,

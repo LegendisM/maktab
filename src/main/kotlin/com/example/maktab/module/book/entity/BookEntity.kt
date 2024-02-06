@@ -21,6 +21,10 @@ class BookEntity(
     @Column
     var price: Int,
 
+    // TODO: relate to Resource entity
+    @Column
+    val file: String,
+
     @Version
     val version: Long = 0L,
 
