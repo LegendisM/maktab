@@ -46,7 +46,7 @@ class UserService(
 
     @Transactional(readOnly = true)
     fun getUserById(id: String): UserModel {
-        val user = findByIdOrThrow(id)
+        val user = this.findByIdOrThrow(id)
 
         return userMapper.toModel(user)
     }

@@ -58,14 +58,14 @@ class BookService(
 
     @Transactional(readOnly = true)
     fun getBook(id: String): BookDTO {
-        val book = findByIdOrThrow(id)
+        val book = this.findByIdOrThrow(id)
 
         return bookMapper.toDto(book)
     }
 
     @Transactional(readOnly = true)
     fun getBookById(id: String): BookDTO {
-        val book = findByIdOrThrow(id)
+        val book = this.findByIdOrThrow(id)
 
         return bookMapper.toDto(book)
     }
@@ -77,7 +77,7 @@ class BookService(
 
     @Transactional
     fun updateBook(id: String, updateDto: UpdateBookRequestDTO): BookDTO {
-        val book = findByIdOrThrow(id)
+        val book = this.findByIdOrThrow(id)
         val categories = categoryService.findAllByIds(updateDto.categories)
 
         if (categories.isEmpty()) throw ApiError.BadRequest("At least one category is required")
@@ -98,7 +98,7 @@ class BookService(
 
     @Transactional
     fun deleteBook(id: String) {
-        val book = findByIdOrThrow(id)
+        val book = this.findByIdOrThrow(id)
 
         bookRepository.delete(book)
 

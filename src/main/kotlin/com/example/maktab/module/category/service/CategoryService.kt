@@ -62,7 +62,7 @@ class CategoryService(
 
     @Transactional(readOnly = true)
     fun getCategoryById(id: String): CategoryDTO {
-        val category = findByIdOrThrow(id)
+        val category = this.findByIdOrThrow(id)
 
         return categoryMapper.toDto(category)
     }
@@ -74,7 +74,7 @@ class CategoryService(
 
     @Transactional
     fun updateCategory(id: String, updateDto: UpdateCategoryRequestDTO): CategoryDTO {
-        val category = findByIdOrThrow(id)
+        val category = this.findByIdOrThrow(id)
 
         category.apply {
             this.title = updateDto.title
@@ -89,7 +89,7 @@ class CategoryService(
 
     @Transactional
     fun deleteCategory(id: String) {
-        val category = findByIdOrThrow(id)
+        val category = this.findByIdOrThrow(id)
 
         categoryRepository.delete(category)
 
