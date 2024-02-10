@@ -8,7 +8,6 @@ package com.example.maktab.module.user.model
 data class UserModel(
     val id: String,
     val username: String,
-    val email: String,
-    val phone: String,
-    val password: String
+    val email: String?,
+    val phone: String?
 )

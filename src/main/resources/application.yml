@@ -23,8 +23,8 @@ server:
 secret:
   jwt:
     access-token:
-      key: my-ac-key
-      expire: 9200
+      key: advanced-access-token-key-more-than-256-bits
+      expire: 3600000 # 1 hour
     refresh-token:
-      key: my-rf-key
-      expire: 9200
+      key: advanced-refresh-token-key-more-than-256-bits
+      expire: 86400000 # 1 day

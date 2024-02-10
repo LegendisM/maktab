@@ -1,4 +1,4 @@
-package com.example.maktab.module.auth.enum
+package com.example.maktab.module.auth.enums
 
 enum class AuthTokenType(value: String) {
     ACCESS("access"),

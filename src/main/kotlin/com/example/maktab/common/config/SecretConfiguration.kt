@@ -14,5 +14,5 @@ data class SecretJwtConfiguration(
 
 data class SecretJwtPropertiesConfiguration(
     val key: String,
-    val expire: Int
+    val expire: Long
 )
