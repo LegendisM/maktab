@@ -3,6 +3,7 @@ package com.example.maktab.module.auth.service
 import com.example.maktab.common.config.SecretConfiguration
 import com.example.maktab.module.auth.model.AuthToken
 import com.example.maktab.module.auth.enums.AuthTokenType
+import com.example.maktab.module.auth.model.AuthTokenPayload
 import com.example.maktab.module.user.model.UserModel
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
@@ -25,6 +26,12 @@ class AuthTokenService(
 
                 Jwts.builder()
                     .setSubject(payload.username)
+                    .addClaims(
+                        mapOf(
+                            "id" to payload.id,
+                            "username" to payload.username
+                        )
+                    )
                     .setIssuedAt(issuedAt)
                     .setExpiration(expirationAt)
                     .signWith(accessKey)
@@ -36,6 +43,12 @@ class AuthTokenService(
 
                 Jwts.builder()
                     .setSubject(payload.username)
+                    .addClaims(
+                        mapOf(
+                            "id" to payload.id,
+                            "username" to payload.username
+                        )
+                    )
                     .setIssuedAt(issuedAt)
                     .setExpiration(expirationAt)
                     .signWith(refreshKey)
@@ -55,7 +68,17 @@ class AuthTokenService(
         }
     }
 
-    fun validateToken() {
-        // TODO
+    fun validateToken(token: String): AuthTokenPayload {
+        val parser = Jwts.parserBuilder()
+            .setSigningKey(accessKey)
+            .build()
+
+        @Suppress("UNCHECKED_CAST")
+        val body = parser.parse(token).body as Map<String, String>
+
+        return AuthTokenPayload(
+            id = body["id"]!!,
+            username = body["username"]!!
+        )
     }
 }
