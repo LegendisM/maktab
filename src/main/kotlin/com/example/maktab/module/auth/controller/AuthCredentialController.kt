@@ -27,7 +27,9 @@ class AuthCredentialController(
     }
 
     @PostMapping("/signin")
-    fun signin(@RequestBody @Valid signinDto: SigninCredentialRequestDTO): ApiDTO.Response.Success<List<AuthToken>> {
+    fun signin(
+        @RequestBody @Valid signinDto: SigninCredentialRequestDTO
+    ): ApiDTO.Response.Success<List<AuthToken>> {
         val result = authCredentialService.signin(signinDto)
 
         return ApiDTO.Response.Success(result)
