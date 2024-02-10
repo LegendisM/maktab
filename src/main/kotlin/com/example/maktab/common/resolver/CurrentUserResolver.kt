@@ -1,4 +1,4 @@
-package com.example.maktab.common.component
+package com.example.maktab.common.resolver
 
 import com.example.maktab.common.annotation.CurrentUser
 import org.springframework.core.MethodParameter

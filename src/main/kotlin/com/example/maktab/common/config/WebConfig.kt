@@ -1,9 +1,8 @@
 package com.example.maktab.common.config
 
-import com.example.maktab.common.component.CurrentUserResolver
+import com.example.maktab.common.resolver.CurrentUserResolver
 import com.example.maktab.common.interceptor.AuthInterceptor
 import com.example.maktab.module.auth.service.AuthTokenService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
