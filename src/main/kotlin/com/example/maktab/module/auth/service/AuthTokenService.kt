@@ -3,8 +3,8 @@ package com.example.maktab.module.auth.service
 import com.example.maktab.common.config.SecretConfiguration
 import com.example.maktab.module.auth.model.AuthToken
 import com.example.maktab.module.auth.enums.AuthTokenType
-import com.example.maktab.module.auth.model.AuthTokenPayload
 import com.example.maktab.module.user.model.UserModel
+import com.example.maktab.module.user.service.UserService
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.stereotype.Service
@@ -13,7 +13,8 @@ import java.util.*
 
 @Service
 class AuthTokenService(
-    private val secretConfiguration: SecretConfiguration
+    private val secretConfiguration: SecretConfiguration,
+    private val userService: UserService
 ) {
     private val accessKey = Keys.hmacShaKeyFor(secretConfiguration.jwt.accessToken.key.toByteArray())
     private val refreshKey = Keys.hmacShaKeyFor(secretConfiguration.jwt.refreshToken.key.toByteArray())
@@ -68,17 +69,19 @@ class AuthTokenService(
         }
     }
 
-    fun validateToken(token: String): AuthTokenPayload {
+    fun validateToken(type: AuthTokenType, token: String): UserModel {
         val parser = Jwts.parserBuilder()
-            .setSigningKey(accessKey)
+            .setSigningKey(
+                when (type) {
+                    AuthTokenType.ACCESS -> accessKey
+                    AuthTokenType.REFRESH -> refreshKey
+                }
+            )
             .build()
 
         @Suppress("UNCHECKED_CAST")
         val body = parser.parse(token).body as Map<String, String>
 
-        return AuthTokenPayload(
-            id = body["id"]!!,
-            username = body["username"]!!
-        )
+        return userService.getUserById(body["id"]!!)
     }
 }

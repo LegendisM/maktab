@@ -18,9 +18,9 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class BookService(
-    val bookRepository: BookRepository,
-    val bookMapper: BookMapper,
-    val categoryService: CategoryService,
+    private val bookRepository: BookRepository,
+    private val bookMapper: BookMapper,
+    private val categoryService: CategoryService,
 ) {
     private val logger = LoggerFactory.getLogger(BookService::class.simpleName)
 

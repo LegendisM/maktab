@@ -18,8 +18,8 @@ import java.util.Optional
 
 @Service
 class UserService(
-    val userRepository: UserRepository,
-    val userMapper: UserMapper,
+    private val userRepository: UserRepository,
+    private val userMapper: UserMapper,
 ) {
     private val logger = LoggerFactory.getLogger(UserService::class.simpleName)
 

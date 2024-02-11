@@ -16,8 +16,8 @@ import java.util.UUID
 
 @Service
 class AuthAccountService(
-    val userService: UserService,
-    val userMapper: UserMapper
+    private val userService: UserService,
+    private val userMapper: UserMapper
 ) {
     private val bCryptPasswordEncoder = BCryptPasswordEncoder()
     private val logger = LoggerFactory.getLogger(AuthAccountService::class.simpleName)

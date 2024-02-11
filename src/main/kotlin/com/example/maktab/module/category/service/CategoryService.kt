@@ -19,8 +19,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CategoryService(
-    val categoryRepository: CategoryRepository,
-    val categoryMapper: CategoryMapper
+    private val categoryRepository: CategoryRepository,
+    private val categoryMapper: CategoryMapper
 ) {
     private val logger = LoggerFactory.getLogger(CategoryService::class.simpleName)
 

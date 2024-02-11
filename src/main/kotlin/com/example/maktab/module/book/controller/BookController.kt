@@ -1,5 +1,6 @@
 package com.example.maktab.module.book.controller
 
+import com.example.maktab.common.annotation.Auth
 import com.example.maktab.common.dto.ApiDTO
 import com.example.maktab.common.dto.PaginationResponseDTO
 import com.example.maktab.module.book.dto.BookDTO
@@ -26,6 +27,7 @@ class BookController(
     val bookService: BookService
 ) {
     @PostMapping
+    @Auth
     fun createBook(
         @RequestBody @Valid createDto: CreateBookRequestDTO
     ): ApiDTO.Response.Success<BookDTO> {
@@ -52,6 +54,7 @@ class BookController(
     }
 
     @PatchMapping("/{id}")
+    @Auth
     fun updateBook(
         @PathVariable("id") @Valid @UUID id: String,
         @RequestBody @Valid updateDto: UpdateBookRequestDTO
@@ -62,6 +65,7 @@ class BookController(
     }
 
     @DeleteMapping("/{id}")
+    @Auth
     fun deleteBook(@PathVariable("id") @Valid @UUID id: String): ApiDTO.Response.Success<String> {
         bookService.deleteBook(id)
 

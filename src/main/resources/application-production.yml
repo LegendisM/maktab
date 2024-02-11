@@ -5,16 +5,16 @@ spring:
   application:
     name: Maktab
   datasource:
-    url: jdbc:postgresql://localhost:5432/maktab
-    username: root
-    password:
+    url: ${PRIMARY_DB_URI}
+    username: ${PRIMARY_DB_USER}
+    password: ${PRIMARY_DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: none
 
 # Server configuration
 server:
-  port: 80
+  port: ${SERVER_MAIN_PORT}
   servlet:
     context-path: /api
 

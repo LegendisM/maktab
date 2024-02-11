@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class AuthCredentialService(
-    val authAccountService: AuthAccountService,
-    val authTokenService: AuthTokenService
+    private val authAccountService: AuthAccountService,
+    private val authTokenService: AuthTokenService
 ) {
     fun signup(signupDto: SignupCredentialRequestDTO): List<AuthToken> {
         val user = authAccountService.createAccount(
