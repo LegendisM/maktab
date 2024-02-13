@@ -36,6 +36,7 @@ dependencies {
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
     implementation("io.jsonwebtoken:jjwt-api:0.11.2")
     implementation("io.jsonwebtoken:jjwt-impl:0.11.2")
+    implementation("aws.sdk.kotlin:s3:1.0.0")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
     runtimeOnly("org.postgresql:postgresql")
