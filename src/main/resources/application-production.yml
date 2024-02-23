@@ -17,8 +17,8 @@ spring:
         enabled: true
         endpoint: s3.ir-thr-at1.arvanstorage.ir
       credentials:
-        access-key: c6808f38-0cb0-4745-b43e-7f8f2380c3c7
-        secret-key: 784244c50c6bfb6ea8a1e1bb8b7fbb25ebbd8f3066f31fcd3746ebbadece71ae
+        access-key:
+        secret-key:
 
 # Server configuration
 server:

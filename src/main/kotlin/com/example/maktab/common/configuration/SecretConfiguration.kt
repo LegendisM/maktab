@@ -1,4 +1,4 @@
-package com.example.maktab.common.config
+package com.example.maktab.common.configuration
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

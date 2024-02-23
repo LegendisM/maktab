@@ -1,4 +1,4 @@
-package com.example.maktab.common.config
+package com.example.maktab.common.configuration
 
 import com.example.maktab.common.resolver.CurrentUserResolver
 import com.example.maktab.common.interceptor.AuthInterceptor

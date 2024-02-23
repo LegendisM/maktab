@@ -1,6 +1,6 @@
 package com.example.maktab.module.auth.service
 
-import com.example.maktab.common.config.SecretConfiguration
+import com.example.maktab.common.configuration.SecretConfiguration
 import com.example.maktab.module.auth.model.AuthToken
 import com.example.maktab.module.auth.enums.AuthTokenType
 import com.example.maktab.module.user.model.UserModel
