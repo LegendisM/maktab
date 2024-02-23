@@ -11,6 +11,7 @@ import com.example.maktab.module.book.mapper.BookMapper
 import com.example.maktab.module.book.repository.BookRepository
 import com.example.maktab.module.book.specification.BookSpecification
 import com.example.maktab.module.category.service.CategoryService
+import com.example.maktab.module.storage.service.StorageResourceService
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -21,12 +22,14 @@ class BookService(
     private val bookRepository: BookRepository,
     private val bookMapper: BookMapper,
     private val categoryService: CategoryService,
+    private val storageResourceService: StorageResourceService
 ) {
     private val logger = LoggerFactory.getLogger(BookService::class.simpleName)
 
     @Transactional
     fun createBook(createDto: CreateBookRequestDTO): BookDTO {
         val categories = categoryService.findAllByIds(createDto.categories)
+        val image = storageResourceService.findByIdOrThrow(createDto.imageId)
 
         if (categories.isEmpty()) throw ApiError.BadRequest("At least one category is required")
 
@@ -35,6 +38,7 @@ class BookService(
                 title = it.title,
                 description = it.description,
                 price = it.price,
+                image = image,
                 categories = categories.toMutableSet()
             )
         })
@@ -79,6 +83,7 @@ class BookService(
     fun updateBook(id: String, updateDto: UpdateBookRequestDTO): BookDTO {
         val book = this.findByIdOrThrow(id)
         val categories = categoryService.findAllByIds(updateDto.categories)
+        val image = storageResourceService.findByIdOrThrow(updateDto.imageId)
 
         if (categories.isEmpty()) throw ApiError.BadRequest("At least one category is required")
 
@@ -87,6 +92,7 @@ class BookService(
             this.description = updateDto.description
             this.price = updateDto.price
             this.categories = categories.toMutableSet()
+            this.image = image
         }
 
         bookRepository.save(book)

@@ -1,14 +1,14 @@
 package com.example.maktab.module.storage.service
 
+import com.example.maktab.common.exception.ApiError
 import com.example.maktab.module.storage.entity.StorageResourceEntity
-import com.example.maktab.module.storage.enums.StorageResourceOwner
 import com.example.maktab.module.storage.mapper.StorageResourceMapper
 import com.example.maktab.module.storage.model.CreateStorageResourceModel
 import com.example.maktab.module.storage.model.StorageResourceModel
 import com.example.maktab.module.storage.model.StorageResourceOwnerModel
 import com.example.maktab.module.storage.repository.StorageResourceRepository
-import com.example.maktab.module.user.model.UserModel
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class StorageResourceService(
@@ -33,5 +33,10 @@ class StorageResourceService(
         )
 
         return storageResourceMapper.toModel(resource)
+    }
+
+    @Transactional(readOnly = true)
+    fun findByIdOrThrow(id: String): StorageResourceEntity {
+        return storageResourceRepository.findById(id).orElseThrow { ApiError.NotFound("Invalid Resource Id") }
     }
 }

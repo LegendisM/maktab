@@ -2,12 +2,12 @@ package com.example.maktab.module.book.entity
 
 import com.example.maktab.common.entity.BaseEntity
 import com.example.maktab.module.category.entity.CategoryEntity
+import com.example.maktab.module.storage.entity.StorageResourceEntity
+import com.fasterxml.jackson.annotation.JsonFilter
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonIncludeProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.*
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
-import java.sql.Date
-import java.sql.Timestamp
-import java.time.Instant
 
 @Entity
 @Table(name = "books")
@@ -21,9 +21,10 @@ class BookEntity(
     @Column
     var price: Int,
 
-    // TODO: relate to Resource entity
-    @Column
-    val file: String = "",
+    @ManyToOne
+    @JoinColumn(name = "image_id", referencedColumnName = "id", nullable = false)
+    @field:JsonIgnoreProperties("url", "key", "id") // TODO: fix property selection
+    var image: StorageResourceEntity,
 
     @Version
     val version: Long = 0L,

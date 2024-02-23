@@ -34,10 +34,8 @@ class StorageResourceEntity(
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @JsonIgnore
     val ownerType: StorageResourceOwner,
 
     @Column(nullable = false)
-    @JsonIgnore
     val ownerId: String,
 ) : BaseEntity()
