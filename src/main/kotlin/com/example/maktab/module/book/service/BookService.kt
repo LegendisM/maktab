@@ -31,7 +31,7 @@ class BookService(
         val categories = categoryService.findAllByIds(createDto.categories)
         val image = storageResourceService.findByIdOrThrow(createDto.imageId)
 
-        if (categories.isEmpty()) throw ApiError.BadRequest("At least one category is required")
+//        if (categories.isEmpty()) throw ApiError.BadRequest("At least one category is required")
 
         val book = bookRepository.save(createDto.let {
             BookEntity(
