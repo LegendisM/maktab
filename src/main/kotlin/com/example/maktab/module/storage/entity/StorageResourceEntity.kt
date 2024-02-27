@@ -3,7 +3,7 @@ package com.example.maktab.module.storage.entity
 import com.example.maktab.common.entity.BaseEntity
 import com.example.maktab.module.storage.enums.StorageBucket
 import com.example.maktab.module.storage.enums.StorageResourceOwner
-import com.fasterxml.jackson.annotation.JsonFilter
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -12,13 +12,13 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "storage_resources")
-@JsonFilter("STORAGE_RESOURCE_FILTER")
 class StorageResourceEntity(
     @Column
     val key: String,
 
     @Column
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     val bucket: StorageBucket,
 
     @Column
@@ -28,15 +28,19 @@ class StorageResourceEntity(
     val title: String?,
 
     @Column
+    @JsonIgnore
     val description: String?,
 
     @Column
+    @JsonIgnore
     val isPrivate: Boolean,
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     val ownerType: StorageResourceOwner,
 
     @Column(nullable = false)
+    @JsonIgnore
     val ownerId: String,
 ) : BaseEntity()
