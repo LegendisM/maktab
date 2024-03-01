@@ -16,8 +16,11 @@ data class CreateBookRequestDTO(
     val price: Int,
 
     @field:UUID
-    val imageId: String,
+    val documentId: String,
 
     @field:Size(min = 1, max = 10)
-    val categories: Set<String>
+    val imageIds: Set<String>,
+
+    @field:Size(min = 1, max = 10)
+    val categoryIds: Set<String>
 )

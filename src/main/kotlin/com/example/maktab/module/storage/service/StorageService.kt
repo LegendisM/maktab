@@ -19,6 +19,7 @@ class StorageService(
 ) {
     fun uploadResource(bucket: StorageBucket, file: MultipartFile, owner: UserModel?): StorageResourceModel {
         val key = file.uniqueKey()
+        val contentType = file.contentType!!
         val result = s3Service.putObject(bucket, key, file.inputStream)
 
         if (!result.sdkHttpResponse().isSuccessful) throw ApiError.Conflict("Failed to upload file")
@@ -32,6 +33,7 @@ class StorageService(
             CreateStorageResourceModel(
                 key = key,
                 bucket = bucket,
+                contentType = contentType,
                 url = objectUrl,
                 title = "Untitled",
                 description = "No description",

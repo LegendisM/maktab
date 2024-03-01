@@ -25,9 +25,15 @@ class UserService(
 
     @Transactional
     fun createUser(createModel: CreateUserModel): UserModel {
-        val user = userRepository.save(
-            userMapper.fromCreateModelToEntity(createModel)
-        )
+        val user = userRepository.save(createModel.let {
+            UserEntity(
+                username = it.username,
+                email = it.email,
+                phone = it.phone,
+                password = it.password,
+                avatar = null
+            )
+        })
 
         logger.info("User created with id ${user.id}")
 
@@ -62,4 +68,6 @@ class UserService(
     fun findByIdOrThrow(id: String): UserEntity {
         return userRepository.findById(id).orElseThrow { ApiError.NotFound("Invalid Id") }
     }
+
+    // TODO: update method
 }

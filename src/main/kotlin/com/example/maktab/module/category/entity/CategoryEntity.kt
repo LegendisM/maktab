@@ -7,15 +7,17 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "categories")
 class CategoryEntity(
+    title: String
+) : BaseEntity() {
     @Column(unique = true)
-    var title: String,
+    var title: String = title
 
     @Column()
-    var slug: String = "",
+    var slug: String = ""
 
     @Version
     val version: Long = 0L
-) : BaseEntity() {
+
     @PrePersist
     @PreUpdate
     fun normalizeField() {

@@ -16,5 +16,5 @@ data class FilterBookRequestDTO(
     val maximumPrice: Int?,
 
     @field:Length(min = 1, max = 60)
-    val category: String?
+    val category: String? // TODO: need a fix patch
 )

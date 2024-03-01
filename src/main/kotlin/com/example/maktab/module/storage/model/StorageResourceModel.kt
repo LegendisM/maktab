@@ -6,6 +6,7 @@ data class StorageResourceModel(
     val id: String,
     val key: String,
     val bucket: StorageBucket,
+    val contentType: String,
     val url: String?,
     val title: String?,
     val description: String?,

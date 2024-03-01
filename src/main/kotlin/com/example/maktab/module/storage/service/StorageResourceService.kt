@@ -23,6 +23,7 @@ class StorageResourceService(
             StorageResourceEntity(
                 key = createModel.key,
                 bucket = createModel.bucket,
+                contentType = createModel.contentType,
                 url = createModel.url,
                 title = createModel.title,
                 description = createModel.description,
@@ -38,5 +39,10 @@ class StorageResourceService(
     @Transactional(readOnly = true)
     fun findByIdOrThrow(id: String): StorageResourceEntity {
         return storageResourceRepository.findById(id).orElseThrow { ApiError.NotFound("Invalid Resource Id") }
+    }
+
+    @Transactional(readOnly = true)
+    fun findAllByIds(ids: Set<String>): List<StorageResourceEntity> {
+        return storageResourceRepository.findAllById(ids)
     }
 }

@@ -1,28 +1,36 @@
 package com.example.maktab.module.user.entity
 
 import com.example.maktab.common.entity.BaseEntity
+import com.example.maktab.module.storage.entity.StorageResourceEntity
 import com.fasterxml.jackson.annotation.JsonIgnore
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Table
-import jakarta.persistence.Version
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "users")
 class UserEntity(
+    username: String,
+    email: String?,
+    phone: String?,
+    password: String?,
+    avatar: StorageResourceEntity?
+) : BaseEntity() {
     @Column(unique = true, nullable = false)
-    var username: String,
+    var username: String = username
 
     @Column
-    var email: String?,
+    var email: String? = email
 
     @Column
-    var phone: String?,
+    var phone: String? = phone
 
     @Column
     @JsonIgnore
-    var password: String?,
+    var password: String? = password
+
+    @OneToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "avatar_id")
+    var avatar: StorageResourceEntity? = avatar
 
     @Version
     val version: Long = 0L
-) : BaseEntity()
+}

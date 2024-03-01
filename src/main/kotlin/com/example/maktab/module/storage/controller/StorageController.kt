@@ -2,6 +2,7 @@ package com.example.maktab.module.storage.controller
 
 import com.example.maktab.common.annotation.Auth
 import com.example.maktab.common.annotation.CurrentUser
+import com.example.maktab.common.annotation.ValidMultipartFile
 import com.example.maktab.common.dto.ApiDTO
 import com.example.maktab.module.storage.enums.StorageBucket
 import com.example.maktab.module.storage.model.StorageResourceModel
@@ -21,7 +22,7 @@ class StorageController(
 ) {
     @PostMapping("/upload")
     fun uploadResource(
-        @RequestParam("file") file: MultipartFile,
+        @RequestParam("file") @ValidMultipartFile file: MultipartFile,
         @CurrentUser user: UserModel
     ): ApiDTO.Response.Success<StorageResourceModel> {
         val result = storageService.uploadResource(StorageBucket.MAKTAB_PUBLIC, file, user)

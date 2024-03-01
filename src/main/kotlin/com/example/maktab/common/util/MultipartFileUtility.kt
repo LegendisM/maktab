@@ -9,5 +9,5 @@ fun MultipartFile.uniqueKey(): String {
         throw ApiError.Conflict("Invalid original file name")
     }
 
-    return "${UUID.randomUUID().toString()}.${this.originalFilename!!.substringAfterLast(".", "")}"
+    return "${UUID.randomUUID().toString()}.${this.contentType?.split("/")?.get(1)}"
 }
