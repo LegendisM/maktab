@@ -27,7 +27,7 @@ class BookService(
     private val categoryService: CategoryService,
     private val storageResourceService: StorageResourceService
 ) {
-    private val logger = LoggerFactory.getLogger(BookService::class.simpleName)
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @Transactional
     fun createBook(createDto: CreateBookRequestDTO): BookDTO {

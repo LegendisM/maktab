@@ -1,0 +1,56 @@
+{
+  "roles": {
+    "administrator": {
+      "key": "administrator",
+      "name": "Administrator",
+      "permissions": [
+        "full-access"
+      ]
+    },
+    "staff": {
+      "key": "staff",
+      "name": "Staff",
+      "permissions": [
+        "book-management",
+        "category-management"
+      ]
+    },
+    "user": {
+      "key": "user",
+      "name": "User",
+      "permissions": []
+    }
+  },
+  "permissions": {
+    "general": {
+      "key": "general",
+      "name": "General",
+      "children": [
+        {
+          "key": "full-access",
+          "name": "Full Access"
+        }
+      ]
+    },
+    "book": {
+      "key": "book",
+      "name": "Book",
+      "children": [
+        {
+          "key": "book-management",
+          "name": "Book Management"
+        }
+      ]
+    },
+    "category": {
+      "key": "category",
+      "name": "Category",
+      "children": [
+        {
+          "key": "category-management",
+          "name": "Category Management"
+        }
+      ]
+    }
+  }
+}

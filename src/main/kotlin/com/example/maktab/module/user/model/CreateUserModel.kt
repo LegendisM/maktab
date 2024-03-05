@@ -4,6 +4,5 @@ data class CreateUserModel(
     val username: String,
     val email: String?,
     val phone: String?,
-    val password: String?,
-    val avatarId: String?
+    val password: String?
 )

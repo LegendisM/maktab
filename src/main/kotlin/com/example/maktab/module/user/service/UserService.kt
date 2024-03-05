@@ -20,17 +20,20 @@ import java.util.Optional
 class UserService(
     private val userRepository: UserRepository,
     private val userMapper: UserMapper,
+    private val roleService: RoleService
 ) {
-    private val logger = LoggerFactory.getLogger(UserService::class.simpleName)
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @Transactional
     fun createUser(createModel: CreateUserModel): UserModel {
+        val defaultRole = roleService.getDefaultUserRole()
         val user = userRepository.save(createModel.let {
             UserEntity(
                 username = it.username,
                 email = it.email,
                 phone = it.phone,
                 password = it.password,
+                role = defaultRole,
                 avatar = null
             )
         })

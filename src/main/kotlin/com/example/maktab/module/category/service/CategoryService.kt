@@ -22,7 +22,7 @@ class CategoryService(
     private val categoryRepository: CategoryRepository,
     private val categoryMapper: CategoryMapper
 ) {
-    private val logger = LoggerFactory.getLogger(CategoryService::class.simpleName)
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @Transactional
     fun createCategory(createDto: CreateCategoryRequestDTO): CategoryDTO {

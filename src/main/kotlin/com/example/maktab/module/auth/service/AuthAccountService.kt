@@ -20,7 +20,7 @@ class AuthAccountService(
     private val userMapper: UserMapper
 ) {
     private val bCryptPasswordEncoder = BCryptPasswordEncoder()
-    private val logger = LoggerFactory.getLogger(AuthAccountService::class.simpleName)
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     fun createAccount(createModel: CreateAccountModel): UserModel {
         if (createModel.username == null) {

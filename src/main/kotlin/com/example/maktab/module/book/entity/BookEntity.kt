@@ -30,16 +30,15 @@ class BookEntity(
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinTable(
-        name = "books_images",
+        name = "book_images",
         joinColumns = [JoinColumn(name = "book_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "image_id", referencedColumnName = "id")]
     )
     var images: MutableSet<StorageResourceEntity> = images
 
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "books_categories",
+        name = "book_categories",
         joinColumns = [JoinColumn(name = "book_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "category_id", referencedColumnName = "id")]
     )

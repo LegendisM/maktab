@@ -12,6 +12,7 @@ class UserEntity(
     email: String?,
     phone: String?,
     password: String?,
+    role: RoleEntity,
     avatar: StorageResourceEntity?
 ) : BaseEntity() {
     @Column(unique = true, nullable = false)
@@ -26,6 +27,10 @@ class UserEntity(
     @Column
     @JsonIgnore
     var password: String? = password
+
+    @OneToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "key")
+    var role: RoleEntity = role
 
     @OneToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "avatar_id")
