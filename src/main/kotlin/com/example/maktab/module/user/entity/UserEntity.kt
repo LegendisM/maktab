@@ -28,11 +28,11 @@ class UserEntity(
     @JsonIgnore
     var password: String? = password
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "key")
     var role: RoleEntity = role
 
-    @OneToOne(fetch = FetchType.EAGER, optional = true)
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "avatar_id")
     var avatar: StorageResourceEntity? = avatar
 

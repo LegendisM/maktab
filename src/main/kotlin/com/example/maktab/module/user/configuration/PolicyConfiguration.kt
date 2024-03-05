@@ -16,8 +16,9 @@ class PolicyConfiguration(
     }
 
     data class Data(
-        val roles: Map<String, Role>,
-        val permissions: Map<String, Permission>
+        val defaultUserRoleKey: String,
+        val roles: List<Role>,
+        val permissions: List<PermissionGroup>
     ) {
         data class Role(
             val key: String,
@@ -25,10 +26,15 @@ class PolicyConfiguration(
             val permissions: List<String>,
         )
 
+        data class PermissionGroup(
+            val key: String,
+            val name: String,
+            val children: List<Permission>
+        )
+
         data class Permission(
             val key: String,
             val name: String
-//            val children: List<Permission>
         )
     }
 }

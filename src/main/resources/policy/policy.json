@@ -1,13 +1,14 @@
 {
-  "roles": {
-    "administrator": {
+  "defaultUserRoleKey": "user",
+  "roles": [
+    {
       "key": "administrator",
       "name": "Administrator",
       "permissions": [
         "full-access"
       ]
     },
-    "staff": {
+    {
       "key": "staff",
       "name": "Staff",
       "permissions": [
@@ -15,14 +16,14 @@
         "category-management"
       ]
     },
-    "user": {
+    {
       "key": "user",
       "name": "User",
       "permissions": []
     }
-  },
-  "permissions": {
-    "general": {
+  ],
+  "permissions": [
+    {
       "key": "general",
       "name": "General",
       "children": [
@@ -32,7 +33,7 @@
         }
       ]
     },
-    "book": {
+    {
       "key": "book",
       "name": "Book",
       "children": [
@@ -42,7 +43,7 @@
         }
       ]
     },
-    "category": {
+    {
       "key": "category",
       "name": "Category",
       "children": [
@@ -52,5 +53,5 @@
         }
       ]
     }
-  }
+  ]
 }

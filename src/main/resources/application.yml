@@ -1,4 +1,5 @@
 # Development environment variables
+
 # Spring configuration
 spring:
   profiles:
