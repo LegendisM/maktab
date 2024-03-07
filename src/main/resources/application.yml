@@ -25,7 +25,7 @@ spring:
         region: aws-global
       credentials:
         access-key: c6808f38-0cb0-4745-b43e-7f8f2380c3c7
-        secret-key: 20a50b6f3d1274d8f6a917d4c296494ed03d55fb8c9f7bdbc6aba900b1a2071b
+        secret-key: 89a82f1b9d38074302a5f3d524ab484787946c8dbbe1b53637792bd7829beb94
 
 # Server configuration
 server:
