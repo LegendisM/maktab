@@ -34,7 +34,7 @@ class CategoryService(
 
         if (exists) throw ApiError.Custom("Category already exists.", status = HttpStatus.CONFLICT)
 
-        val category = categoryRepository.save(
+        val category = saveCategory(
             categoryMapper.fromCreateDtoToEntity(createDto)
         )
 
@@ -80,7 +80,7 @@ class CategoryService(
             this.title = updateDto.title
         }
 
-        categoryRepository.save(category)
+        saveCategory(category)
 
         logger.info("The category $id updated successfully")
 
@@ -95,4 +95,7 @@ class CategoryService(
 
         logger.info("The category $id removed successfully")
     }
+
+    @Transactional
+    fun saveCategory(category: CategoryEntity): CategoryEntity = categoryRepository.save(category)
 }

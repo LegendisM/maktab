@@ -7,7 +7,6 @@ import com.example.maktab.module.user.entity.UserEntity
 import com.example.maktab.module.user.mapper.UserMapper
 import com.example.maktab.module.user.model.CreateUserModel
 import com.example.maktab.module.user.model.FilterUserModel
-import com.example.maktab.module.user.model.UpdateUserModel
 import com.example.maktab.module.user.model.UserModel
 import com.example.maktab.module.user.repository.UserRepository
 import com.example.maktab.module.user.specification.UserSpecification
@@ -30,7 +29,7 @@ class UserService(
     @Transactional
     fun createUser(createModel: CreateUserModel): UserModel {
         val defaultRole = roleService.getDefaultUserRole()
-        val user = userRepository.save(createModel.let {
+        val user = saveUser(createModel.let {
             UserEntity(
                 username = it.username,
                 email = it.email,
@@ -81,28 +80,5 @@ class UserService(
     }
 
     @Transactional
-    fun updateUser(id: String, updateModel: UpdateUserModel): UserModel {
-        val user = this.findByIdOrThrow(id)
-
-//        user.apply {
-//            updateModel.username.ifPresent {
-//                this.username = it
-//            } // TODO: fix here to when the optional is exist, update the value of field (null or filled) to target entity field
-//
-//            updateModel.username.let {
-//                if ((this@UserService.existBy(it))) throw ApiError.Conflict("Username already used")
-//                this.username = it
-//            }
-//            updateModel.email?.let { this.email = it }
-//            updateModel.phone?.let { this.phone = it }
-//            updateModel.password?.let { this.password = it }
-//            updateModel.avatar?.let { this.avatar = it }
-//        }
-
-        userRepository.save(user)
-
-        logger.info("The user $id updated successfully")
-
-        return userMapper.toModel(user)
-    }
+    fun saveUser(user: UserEntity): UserEntity = userRepository.save(user)
 }

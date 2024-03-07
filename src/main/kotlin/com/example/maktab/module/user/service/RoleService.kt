@@ -5,6 +5,7 @@ import com.example.maktab.module.user.configuration.PolicyConfiguration
 import com.example.maktab.module.user.entity.RoleEntity
 import com.example.maktab.module.user.repository.RoleRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.Optional
 
 @Service
@@ -13,7 +14,7 @@ class RoleService(
     private val policyConfiguration: PolicyConfiguration
 ) {
     fun createRole(role: RoleEntity): RoleEntity {
-        return roleRepository.save(role)
+        return saveRole(role)
     }
 
     fun findByKey(key: String): Optional<RoleEntity> {
@@ -29,4 +30,7 @@ class RoleService(
     fun deleteRole(key: String) {
         roleRepository.deleteById(key)
     }
+
+    @Transactional
+    fun saveRole(role: RoleEntity): RoleEntity = roleRepository.save(role)
 }

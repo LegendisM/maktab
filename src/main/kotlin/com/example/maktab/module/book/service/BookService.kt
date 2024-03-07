@@ -38,7 +38,7 @@ class BookService(
         // * Validate resources count & content-type
         this.validateBookRequiredResources(document, images, categories)
 
-        val book = bookRepository.save(createDto.let {
+        val book = saveBook(createDto.let {
             BookEntity(
                 title = it.title,
                 description = it.description,
@@ -104,7 +104,7 @@ class BookService(
             this.categories = categories.toMutableSet()
         }
 
-        bookRepository.save(book)
+        saveBook(book)
 
         logger.info("The book $id updated successfully.")
 
@@ -130,4 +130,7 @@ class BookService(
         if (!BookConstant.VALID_DOCUMENT_CONTENT_TYPES.contains(document.contentType)) throw ApiError.BadRequest("Invalid resource document content type")
         if (images.any { !BookConstant.VALID_IMAGE_CONTENT_TYPES.contains(it.contentType) }) throw ApiError.BadRequest("Invalid resource image content type")
     }
+
+    @Transactional
+    fun saveBook(book: BookEntity): BookEntity = bookRepository.save(book)
 }

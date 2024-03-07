@@ -19,7 +19,7 @@ class StorageResourceService(
         createModel: CreateStorageResourceModel,
         owner: StorageResourceOwnerModel
     ): StorageResourceModel {
-        val resource = storageResourceRepository.save(
+        val resource = saveStorageResource(
             StorageResourceEntity(
                 key = createModel.key,
                 bucket = createModel.bucket,
@@ -44,5 +44,10 @@ class StorageResourceService(
     @Transactional(readOnly = true)
     fun findAllByIds(ids: Set<String>): List<StorageResourceEntity> {
         return storageResourceRepository.findAllById(ids)
+    }
+
+    @Transactional
+    fun saveStorageResource(storageResource: StorageResourceEntity): StorageResourceEntity {
+        return storageResourceRepository.save(storageResource)
     }
 }
