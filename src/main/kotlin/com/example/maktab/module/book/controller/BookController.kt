@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/v1/books")
 class BookController(
-    val bookService: BookService
+    private val bookService: BookService
 ) {
     @PostMapping
     @Auth

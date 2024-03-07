@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/v1/auth/credential")
 class AuthCredentialController(
-    val authCredentialService: AuthCredentialService
+    private val authCredentialService: AuthCredentialService
 ) {
     @PostMapping("/signup")
     fun signup(

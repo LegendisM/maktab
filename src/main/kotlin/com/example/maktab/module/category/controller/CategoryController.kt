@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/v1/categories")
 class CategoryController(
-    val categoryService: CategoryService
+    private val categoryService: CategoryService
 ) {
     @PostMapping
     @Auth
