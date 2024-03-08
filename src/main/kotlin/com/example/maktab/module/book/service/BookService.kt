@@ -31,7 +31,7 @@ class BookService(
 
     @Transactional
     fun createBook(createDto: CreateBookRequestDTO): BookDTO {
-        val document = storageResourceService.findByIdOrThrow(createDto.documentId)
+        val document = storageResourceService.findByIdOrThrow(createDto.documentId, "Invalid document")
         val images = storageResourceService.findAllByIds(createDto.imageIds)
         val categories = categoryService.findAllByIds(createDto.categoryIds)
 
@@ -88,7 +88,7 @@ class BookService(
     @Transactional
     fun updateBook(id: String, updateDto: UpdateBookRequestDTO): BookDTO {
         val book = this.findByIdOrThrow(id)
-        val document = storageResourceService.findByIdOrThrow(updateDto.documentId)
+        val document = storageResourceService.findByIdOrThrow(updateDto.documentId, "Invalid document")
         val categories = categoryService.findAllByIds(updateDto.categoryIds)
         val images = storageResourceService.findAllByIds(updateDto.imageIds)
 

@@ -26,6 +26,11 @@ object ApiError {
 
     data class Unauthorized(
         override val message: String = "Unauthorized Request",
+        val status: HttpStatus = HttpStatus.UNAUTHORIZED
+    ) : ResponseStatusException(status, message)
+
+    data class Forbidden(
+        override val message: String = "Forbidden (Invalid access to this section)",
         val status: HttpStatus = HttpStatus.FORBIDDEN
     ) : ResponseStatusException(status, message)
 }

@@ -36,7 +36,7 @@ class AuthInterceptor(
                 val user = authTokenService.validateToken(AuthTokenType.ACCESS, token)
                 request.setAttribute("user", user)
             } catch (error: Exception) {
-                throw ApiError.Unauthorized("Invalid Authorization")
+                throw ApiError.Unauthorized("Invalid Authentication")
             }
 
             return true

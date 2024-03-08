@@ -37,8 +37,9 @@ class StorageResourceService(
     }
 
     @Transactional(readOnly = true)
-    fun findByIdOrThrow(id: String): StorageResourceEntity {
-        return storageResourceRepository.findById(id).orElseThrow { ApiError.NotFound("Invalid Resource Id") }
+    fun findByIdOrThrow(id: String, throwMessage: String? = null): StorageResourceEntity {
+        return storageResourceRepository.findById(id)
+            .orElseThrow { ApiError.NotFound(throwMessage ?: "Invalid Resource Id") }
     }
 
     @Transactional(readOnly = true)

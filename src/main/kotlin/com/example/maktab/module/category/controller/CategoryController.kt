@@ -1,6 +1,7 @@
 package com.example.maktab.module.category.controller
 
 import com.example.maktab.common.annotation.Auth
+import com.example.maktab.common.annotation.Policy
 import com.example.maktab.common.dto.ApiDTO
 import com.example.maktab.common.dto.PaginationResponseDTO
 import com.example.maktab.module.category.dto.CategoryDTO
@@ -28,6 +29,7 @@ class CategoryController(
 ) {
     @PostMapping
     @Auth
+    @Policy(permissions = ["category-management"])
     fun createCategory(
         @RequestBody @Valid createDto: CreateCategoryRequestDTO
     ): ApiDTO.Response.Success<CategoryDTO> {
@@ -55,6 +57,7 @@ class CategoryController(
 
     @PatchMapping("/{id}")
     @Auth
+    @Policy(permissions = ["category-management"])
     fun updateCategory(
         @PathVariable("id") @Valid @UUID id: String,
         @RequestBody @Valid updateDto: UpdateCategoryRequestDTO
@@ -66,6 +69,7 @@ class CategoryController(
 
     @DeleteMapping("/{id}")
     @Auth
+    @Policy(permissions = ["category-management"])
     fun deleteCategory(@PathVariable("id") @Valid @UUID id: String): ApiDTO.Response.Success<String> {
         categoryService.deleteCategory(id)
 

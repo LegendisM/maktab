@@ -17,6 +17,7 @@ class PolicyConfiguration(
 
     data class Data(
         val defaultUserRoleKey: String,
+        val defaultFullAccessPermissionKey: String,
         val roles: List<Role>,
         val permissions: List<PermissionGroup>
     ) {
