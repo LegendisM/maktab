@@ -24,7 +24,7 @@ class BookEntity(
     @Column
     var price: Int = price
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne
     @JoinColumn(name = "document_id")
     var document: StorageResourceEntity = document
 

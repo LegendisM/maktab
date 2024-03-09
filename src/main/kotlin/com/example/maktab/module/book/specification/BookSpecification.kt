@@ -3,7 +3,6 @@ package com.example.maktab.module.book.specification
 import com.example.maktab.module.book.dto.FilterBookRequestDTO
 import com.example.maktab.module.book.entity.BookEntity
 import com.example.maktab.module.category.entity.CategoryEntity
-import org.hibernate.mapping.Join
 import org.springframework.data.jpa.domain.Specification
 
 object BookSpecification {

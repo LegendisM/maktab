@@ -32,7 +32,7 @@ class UserEntity(
     @JoinColumn(name = "role_id", referencedColumnName = "key")
     var role: RoleEntity = role
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "avatar_id")
     var avatar: StorageResourceEntity? = avatar
 
