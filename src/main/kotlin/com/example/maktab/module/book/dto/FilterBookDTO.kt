@@ -1,8 +1,6 @@
 package com.example.maktab.module.book.dto
 
 import jakarta.validation.constraints.Min
-import jakarta.validation.constraints.NotEmpty
-import jakarta.validation.constraints.Size
 import org.hibernate.validator.constraints.Length
 
 data class FilterBookRequestDTO(

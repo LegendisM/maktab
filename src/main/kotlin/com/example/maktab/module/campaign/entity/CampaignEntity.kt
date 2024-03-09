@@ -2,6 +2,7 @@ package com.example.maktab.module.campaign.entity
 
 import com.example.maktab.common.entity.BaseEntity
 import com.example.maktab.module.storage.entity.StorageResourceEntity
+import com.example.maktab.module.tag.entity.TagEntity
 import jakarta.persistence.*
 import java.util.*
 
@@ -14,7 +15,7 @@ class CampaignEntity(
     meetStartAt: Date,
     meetEndAt: Date,
     meetUrl: String,
-    tags: Set<CampaignTagEntity>
+    tags: MutableSet<TagEntity>
 ) : BaseEntity() {
     @Column
     var title: String = title
@@ -41,6 +42,5 @@ class CampaignEntity(
         joinColumns = [JoinColumn(name = "campaign_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "tag_id", referencedColumnName = "key")]
     )
-    var tags: MutableSet<CampaignTagEntity> = tags
-
+    var tags: MutableSet<TagEntity> = tags
 }

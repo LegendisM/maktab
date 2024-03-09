@@ -14,7 +14,8 @@
       "name": "Staff",
       "permissions": [
         "book-management",
-        "category-management"
+        "category-management",
+        "tag-management"
       ]
     },
     {
@@ -51,6 +52,16 @@
         {
           "key": "category-management",
           "name": "Category Management"
+        }
+      ]
+    },
+    {
+      "key": "tag",
+      "name": "Tag",
+      "children": [
+        {
+          "key": "tag-management",
+          "name": "Tag Management"
         }
       ]
     }
