@@ -43,7 +43,7 @@ class StorageResourceService(
     }
 
     @Transactional(readOnly = true)
-    fun findAllByIds(ids: Set<String>): List<StorageResourceEntity> {
+    fun findAllByIds(ids: List<String>): List<StorageResourceEntity> {
         return storageResourceRepository.findAllById(ids)
     }
 

@@ -12,8 +12,8 @@ class BookEntity(
     description: String,
     price: Int,
     document: StorageResourceEntity,
-    images: MutableSet<StorageResourceEntity>,
-    categories: MutableSet<CategoryEntity>,
+    images: MutableList<StorageResourceEntity>,
+    categories: MutableList<CategoryEntity>,
 ) : BaseEntity() {
     @Column
     var title: String = title
@@ -34,7 +34,7 @@ class BookEntity(
         joinColumns = [JoinColumn(name = "book_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "image_id", referencedColumnName = "id")]
     )
-    var images: MutableSet<StorageResourceEntity> = images
+    var images: MutableList<StorageResourceEntity> = images
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -42,7 +42,7 @@ class BookEntity(
         joinColumns = [JoinColumn(name = "book_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "category_id", referencedColumnName = "id")]
     )
-    var categories: MutableSet<CategoryEntity> = categories
+    var categories: MutableList<CategoryEntity> = categories
 
     @Version
     val version: Long = 0L

@@ -10,8 +10,8 @@ data class BookDTO(
     val description: String,
     val price: Int,
     val document: StorageResourceEntity,
-    val images: Set<StorageResourceEntity>,
-    val categories: Set<CategoryDTO>,
+    val images: List<StorageResourceEntity>,
+    val categories: List<CategoryDTO>,
     val createdAt: Date? = null,
     val updatedAt: Date? = null
 )

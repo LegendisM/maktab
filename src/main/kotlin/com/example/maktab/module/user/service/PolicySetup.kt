@@ -44,7 +44,7 @@ class PolicySetup(
                     name = role.name,
                     permissions = role.permissions.mapNotNull { permissionKey ->
                         savedPermissions.find { it.key == permissionKey }
-                    }.toMutableSet()
+                    }.toMutableList()
                 )
             )
         }

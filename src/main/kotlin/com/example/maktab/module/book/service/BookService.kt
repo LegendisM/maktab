@@ -1,6 +1,5 @@
 package com.example.maktab.module.book.service
 
-import com.example.maktab.common.dto.PaginationResponseDTO
 import com.example.maktab.common.exception.ApiError
 import com.example.maktab.module.book.constant.BookConstant
 import com.example.maktab.module.book.dto.BookDTO
@@ -16,6 +15,7 @@ import com.example.maktab.module.category.service.CategoryService
 import com.example.maktab.module.storage.entity.StorageResourceEntity
 import com.example.maktab.module.storage.service.StorageResourceService
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -38,14 +38,14 @@ class BookService(
         // * Validate resources count & content-type
         this.validateBookRequiredResources(document, images, categories)
 
-        val book = saveBook(createDto.let {
+        val book = this.saveBook(createDto.let {
             BookEntity(
                 title = it.title,
                 description = it.description,
                 price = it.price,
                 document = document,
-                images = images.toMutableSet(),
-                categories = categories.toMutableSet()
+                images = images.toMutableList(),
+                categories = categories.toMutableList()
             )
         })
 
@@ -55,15 +55,10 @@ class BookService(
     }
 
     @Transactional(readOnly = true)
-    fun getAllBooks(filterDto: FilterBookRequestDTO, page: Pageable): PaginationResponseDTO<BookDTO> {
+    fun getAllBooks(filterDto: FilterBookRequestDTO, page: Pageable): Page<BookDTO> {
         val books = bookRepository.findAll(BookSpecification.filter(filterDto), page)
 
-        return PaginationResponseDTO(
-            items = bookMapper.toDtos(books.toList()),
-            size = books.size,
-            page = page.pageNumber,
-            total = books.totalPages
-        )
+        return books.map { bookMapper.toDto(it) }
     }
 
     @Transactional(readOnly = true)
@@ -100,8 +95,8 @@ class BookService(
             this.description = updateDto.description
             this.price = updateDto.price
             this.document = document
-            this.images = images.toMutableSet()
-            this.categories = categories.toMutableSet()
+            this.images = images.toMutableList()
+            this.categories = categories.toMutableList()
         }
 
         saveBook(book)
@@ -120,6 +115,9 @@ class BookService(
         logger.info("The book $id removed successfully.")
     }
 
+    @Transactional
+    fun saveBook(book: BookEntity): BookEntity = bookRepository.save(book)
+
     fun validateBookRequiredResources(
         document: StorageResourceEntity,
         images: List<StorageResourceEntity>,
@@ -130,7 +128,4 @@ class BookService(
         if (!BookConstant.VALID_DOCUMENT_CONTENT_TYPES.contains(document.contentType)) throw ApiError.BadRequest("Invalid resource document content type")
         if (images.any { !BookConstant.VALID_IMAGE_CONTENT_TYPES.contains(it.contentType) }) throw ApiError.BadRequest("Invalid resource image content type")
     }
-
-    @Transactional
-    fun saveBook(book: BookEntity): BookEntity = bookRepository.save(book)
 }

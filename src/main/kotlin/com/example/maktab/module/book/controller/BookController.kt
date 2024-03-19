@@ -3,7 +3,6 @@ package com.example.maktab.module.book.controller
 import com.example.maktab.common.annotation.Auth
 import com.example.maktab.common.annotation.Policy
 import com.example.maktab.common.dto.ApiDTO
-import com.example.maktab.common.dto.PaginationResponseDTO
 import com.example.maktab.module.book.dto.BookDTO
 import com.example.maktab.module.book.dto.CreateBookRequestDTO
 import com.example.maktab.module.book.dto.FilterBookRequestDTO
@@ -11,6 +10,7 @@ import com.example.maktab.module.book.dto.UpdateBookRequestDTO
 import com.example.maktab.module.book.service.BookService
 import jakarta.validation.Valid
 import org.hibernate.validator.constraints.UUID
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -42,7 +42,7 @@ class BookController(
     fun getAllBooks(
         @RequestBody @Valid filterDto: FilterBookRequestDTO,
         page: Pageable
-    ): ApiDTO.Response.Success<PaginationResponseDTO<BookDTO>> {
+    ): ApiDTO.Response.Success<Page<BookDTO>> {
         val result = bookService.getAllBooks(filterDto, page)
 
         return ApiDTO.Response.Success(result)

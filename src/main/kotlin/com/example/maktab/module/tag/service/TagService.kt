@@ -1,6 +1,5 @@
 package com.example.maktab.module.tag.service
 
-import com.example.maktab.common.dto.PaginationResponseDTO
 import com.example.maktab.common.exception.ApiError
 import com.example.maktab.module.tag.entity.TagEntity
 import com.example.maktab.module.tag.dto.CreateTagRequestDTO
@@ -10,6 +9,7 @@ import com.example.maktab.module.tag.mapper.TagMapper
 import com.example.maktab.module.tag.repository.TagRepository
 import com.example.maktab.module.tag.specification.TagSpecification
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -44,19 +44,14 @@ class TagService(
     }
 
     @Transactional(readOnly = true)
-    fun getAllTags(filterDto: FilterTagRequestDTO, page: Pageable): PaginationResponseDTO<TagDTO> {
+    fun getAllTags(filterDto: FilterTagRequestDTO, page: Pageable): Page<TagDTO> {
         val tags = tagRepository.findAll(TagSpecification.filter(filterDto), page)
 
-        return PaginationResponseDTO(
-            items = tagMapper.toDtos(tags.toList()),
-            size = tags.size,
-            page = page.pageNumber,
-            total = tags.totalPages
-        )
+        return tags.map { tagMapper.toDto(it) }
     }
 
     @Transactional(readOnly = true)
-    fun findAllByKeys(keys: Set<String>): List<TagEntity> {
+    fun findAllByKeys(keys: List<String>): List<TagEntity> {
         return tagRepository.findAllById(keys)
     }
 

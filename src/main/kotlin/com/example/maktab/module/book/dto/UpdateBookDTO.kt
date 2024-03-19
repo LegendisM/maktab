@@ -20,8 +20,8 @@ data class UpdateBookRequestDTO(
     val documentId: String,
     
     @field:Size(min = 1, max = 10)
-    val imageIds: Set<String>,
+    val imageIds: List<String>,
 
     @field:Size(min = 1, max = 10)
-    val categoryIds: Set<String>
+    val categoryIds: List<String>
 )

@@ -1,6 +1,5 @@
 package com.example.maktab.module.category.service
 
-import com.example.maktab.common.dto.PaginationResponseDTO
 import com.example.maktab.common.exception.ApiError
 import com.example.maktab.common.util.toSlug
 import com.example.maktab.module.category.dto.CategoryDTO
@@ -12,6 +11,7 @@ import com.example.maktab.module.category.mapper.CategoryMapper
 import com.example.maktab.module.category.repository.CategoryRepository
 import com.example.maktab.module.category.specification.CategorySpecification
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -44,19 +44,14 @@ class CategoryService(
     }
 
     @Transactional(readOnly = true)
-    fun getAllCategories(filterDto: FilterCategoryRequestDTO, page: Pageable): PaginationResponseDTO<CategoryDTO> {
+    fun getAllCategories(filterDto: FilterCategoryRequestDTO, page: Pageable): Page<CategoryDTO> {
         val categories = categoryRepository.findAll(CategorySpecification.filter(filterDto), page)
 
-        return PaginationResponseDTO(
-            items = categoryMapper.toDtos(categories.toList()),
-            size = categories.size,
-            page = page.pageNumber,
-            total = categories.totalPages
-        )
+        return categories.map { categoryMapper.toDto(it) }
     }
 
     @Transactional(readOnly = true)
-    fun findAllByIds(ids: Set<String>): List<CategoryEntity> {
+    fun findAllByIds(ids: List<String>): List<CategoryEntity> {
         return categoryRepository.findAllById(ids)
     }
 

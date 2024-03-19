@@ -3,12 +3,12 @@ package com.example.maktab.module.tag.controller
 import com.example.maktab.common.annotation.Auth
 import com.example.maktab.common.annotation.Policy
 import com.example.maktab.common.dto.ApiDTO
-import com.example.maktab.common.dto.PaginationResponseDTO
 import com.example.maktab.module.tag.dto.CreateTagRequestDTO
 import com.example.maktab.module.tag.dto.FilterTagRequestDTO
 import com.example.maktab.module.tag.dto.TagDTO
 import com.example.maktab.module.tag.service.TagService
 import jakarta.validation.Valid
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -39,7 +39,7 @@ class TagController(
     fun getAllTags(
         @RequestBody @Valid filterDto: FilterTagRequestDTO,
         page: Pageable
-    ): ApiDTO.Response.Success<PaginationResponseDTO<TagDTO>> {
+    ): ApiDTO.Response.Success<Page<TagDTO>> {
         val result = tagService.getAllTags(filterDto, page)
 
         return ApiDTO.Response.Success(result)

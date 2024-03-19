@@ -8,7 +8,7 @@ import jakarta.persistence.*
 class RoleEntity(
     key: String,
     name: String,
-    permissions: MutableSet<PermissionEntity>
+    permissions: MutableList<PermissionEntity>
 ) {
     @Id
     var key: String = key
@@ -22,5 +22,5 @@ class RoleEntity(
         joinColumns = [JoinColumn(name = "role_id", referencedColumnName = "key")],
         inverseJoinColumns = [JoinColumn(name = "permission_id", referencedColumnName = "key")]
     )
-    var permissions: MutableSet<PermissionEntity> = permissions
+    var permissions: MutableList<PermissionEntity> = permissions
 }
