@@ -1,8 +1,8 @@
 package com.example.maktab.module.campaign.entity
 
 import com.example.maktab.common.entity.BaseEntity
+import com.example.maktab.module.campaign.dto.CampaignDTO
 import com.example.maktab.module.category.entity.CategoryEntity
-import com.example.maktab.module.storage.entity.StorageResourceEntity
 import com.example.maktab.module.tag.entity.TagEntity
 import com.example.maktab.module.user.entity.UserEntity
 import jakarta.persistence.*
@@ -33,7 +33,7 @@ class CampaignEntity(
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    var owner: UserEntity = owner // TODO: summary (just return the username field)
+    var owner: UserEntity = owner
 
     @Column(name = "owner_id", insertable = false, updatable = false)
     val ownerId: String? = null
@@ -42,7 +42,7 @@ class CampaignEntity(
     @JoinColumn(name = "category_id")
     var category: CategoryEntity = category
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "campaign_tags",
         joinColumns = [JoinColumn(name = "campaign_id", referencedColumnName = "id")],

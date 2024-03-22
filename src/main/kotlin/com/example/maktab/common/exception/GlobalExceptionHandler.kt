@@ -1,6 +1,7 @@
 package com.example.maktab.common.exception
 
 import com.example.maktab.common.dto.ApiDTO
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -67,6 +68,17 @@ class GlobalExceptionHandler {
         return ApiDTO.Response.Error(
             message = exception.message ?: "Internal Server Error",
             status = HttpStatus.INTERNAL_SERVER_ERROR
+        )
+    }
+
+    @ExceptionHandler(EntityNotFoundException::class)
+    fun resolveEntityNotFoundException(
+        exception: EntityNotFoundException,
+        request: WebRequest
+    ): ApiDTO.Response.Error {
+        return ApiDTO.Response.Error(
+            message = "Unable to find your target entity with this id",
+            status = HttpStatus.NOT_FOUND
         )
     }
 }

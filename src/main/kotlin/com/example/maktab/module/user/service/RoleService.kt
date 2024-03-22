@@ -2,6 +2,7 @@ package com.example.maktab.module.user.service
 
 import com.example.maktab.common.exception.ApiError
 import com.example.maktab.module.user.configuration.PolicyConfiguration
+import com.example.maktab.module.user.entity.PermissionEntity
 import com.example.maktab.module.user.entity.RoleEntity
 import com.example.maktab.module.user.repository.RoleRepository
 import org.springframework.stereotype.Service
@@ -14,8 +15,14 @@ class RoleService(
     private val policyConfiguration: PolicyConfiguration
 ) {
     @Transactional
-    fun createRole(role: RoleEntity): RoleEntity {
-        return saveRole(role)
+    fun createRole(key: String, name: String, permissions: MutableList<PermissionEntity>): RoleEntity {
+        return saveRole(
+            RoleEntity(
+                key = key,
+                name = name,
+                permissions = permissions
+            )
+        )
     }
 
     @Transactional(readOnly = true)

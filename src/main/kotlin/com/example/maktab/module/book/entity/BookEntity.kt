@@ -28,7 +28,7 @@ class BookEntity(
     @JoinColumn(name = "document_id")
     var document: StorageResourceEntity = document
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "book_images",
         joinColumns = [JoinColumn(name = "book_id", referencedColumnName = "id")],

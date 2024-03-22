@@ -52,13 +52,17 @@ object CampaignSpecification {
     fun filterByTags(tags: List<String>?) = Specification<CampaignEntity> { root, _, builder ->
         if (tags == null) return@Specification null
 
-        val joinTag = root.join<TagEntity, CampaignEntity>(TagEntity::name.name)
+        val joinTag = root.join<TagEntity, CampaignEntity>(CampaignEntity::tags.name)
 
-        builder.like(
-            builder.lower(
-                joinTag.get(TagEntity::name.name)
-            ),
-            "%${tags.joinToString("|")}%"
+        builder.or(
+            *tags.map {
+                builder.like(
+                    builder.lower(
+                        joinTag.get(TagEntity::name.name)
+                    ),
+                    "%$it%"
+                )
+            }.toTypedArray()
         )
     }
 }

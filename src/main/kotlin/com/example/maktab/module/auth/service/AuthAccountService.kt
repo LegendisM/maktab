@@ -59,15 +59,14 @@ class AuthAccountService(
     }
 
     fun validateAccount(validateModel: ValidateAccountModel): UserModel {
-        val user = userService.findOne(
-            UserSpecification.filter(
-                FilterUserModel(
-                    username = validateModel.username,
-                    email = validateModel.email,
-                    phone = validateModel.phone
-                )
+        val filter = UserSpecification.filter(
+            FilterUserModel(
+                username = validateModel.username,
+                email = validateModel.email,
+                phone = validateModel.phone,
             )
-        ).orElseThrow {
+        )
+        val user = userService.findOne(filter).orElseThrow {
             throw ApiError.NotFound("Account not founded")
         }
 

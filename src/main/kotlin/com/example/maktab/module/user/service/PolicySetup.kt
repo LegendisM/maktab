@@ -7,6 +7,7 @@ import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import kotlin.jvm.optionals.getOrNull
 
 @Service
 class PolicySetup(
@@ -26,30 +27,46 @@ class PolicySetup(
         val savedPermissions: MutableList<PermissionEntity> = mutableListOf()
 
         for (permissionGroup in permissions) {
-            for (permission in permissionGroup.children) {
-                permissionService.deletePermission(permission.key)
-                val instance = permissionService.createPermission(
-                    PermissionEntity(
-                        key = permission.key,
-                        name = permission.name,
+            for (permissionData in permissionGroup.children) {
+                var permission = permissionService.findByKey(permissionData.key).getOrNull()
+
+                if (permission == null) {
+                    permission = permissionService.createPermission(
+                        key = permissionData.key,
+                        name = permissionData.name,
                         groupKey = permissionGroup.key
                     )
-                )
-                savedPermissions.add(instance)
+                } else {
+                    permission.apply {
+                        this.name = permissionData.name
+                        this.groupKey = permissionGroup.key
+                    }
+                    permissionService.savePermission(permission)
+                }
+
+                savedPermissions.add(permission)
             }
         }
 
-        for (role in roles) {
-            roleService.deleteRole(role.key)
-            roleService.createRole(
-                RoleEntity(
-                    key = role.key,
-                    name = role.name,
-                    permissions = role.permissions.mapNotNull { permissionKey ->
-                        savedPermissions.find { it.key == permissionKey }
-                    }.toMutableList()
+        for (roleData in roles) {
+            val role = roleService.findByKey(roleData.key).getOrNull()
+            val rolePermissions = roleData.permissions.mapNotNull { permissionKey ->
+                savedPermissions.find { it.key == permissionKey }
+            }.toMutableList()
+
+            if (role == null) {
+                roleService.createRole(
+                    key = roleData.key,
+                    name = roleData.name,
+                    permissions = rolePermissions
                 )
-            )
+            } else {
+                role.apply {
+                    this.name = roleData.name
+                    this.permissions = rolePermissions
+                }
+                roleService.saveRole(role)
+            }
         }
     }
 }

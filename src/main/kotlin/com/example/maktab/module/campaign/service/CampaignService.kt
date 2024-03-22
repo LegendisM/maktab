@@ -10,11 +10,9 @@ import com.example.maktab.module.campaign.mapper.CampaignMapper
 import com.example.maktab.module.campaign.repository.CampaignRepository
 import com.example.maktab.module.campaign.specification.CampaignSpecification
 import com.example.maktab.module.category.entity.CategoryEntity
-import com.example.maktab.module.category.service.CategoryService
 import com.example.maktab.module.tag.entity.TagEntity
 import com.example.maktab.module.tag.service.TagService
 import com.example.maktab.module.user.entity.UserEntity
-import com.example.maktab.module.user.service.UserService
 import jakarta.persistence.EntityManager
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
@@ -59,7 +57,8 @@ class CampaignService(
 
     @Transactional(readOnly = true)
     fun getAllCampaigns(filterDto: FilterCampaignRequestDTO, page: Pageable): Page<CampaignDTO> {
-        val campaigns = campaignRepository.findAll(CampaignSpecification.filter(filterDto), page)
+        val filter = CampaignSpecification.filter(filterDto)
+        val campaigns = campaignRepository.findAll(filter, page)
 
         return campaigns.map { campaignMapper.toDto(it) }
     }

@@ -1,7 +1,8 @@
 package com.example.maktab.module.campaign.dto
 
-import com.example.maktab.module.category.entity.CategoryEntity
-import com.example.maktab.module.tag.entity.TagEntity
+import com.example.maktab.module.category.dto.CategoryDTO
+import com.example.maktab.module.tag.dto.TagDTO
+import com.example.maktab.module.user.dto.UserPublicDTO
 import java.util.*
 
 data class CampaignDTO(
@@ -10,6 +11,7 @@ data class CampaignDTO(
     var description: String,
     var startAt: Date,
     var finishAt: Date,
-    var category: CategoryEntity,
-    var tags: MutableList<TagEntity>
+    var owner: UserPublicDTO,
+    var category: CategoryDTO,
+    var tags: MutableList<TagDTO>
 )

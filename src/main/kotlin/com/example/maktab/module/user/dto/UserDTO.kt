@@ -1,6 +1,6 @@
 package com.example.maktab.module.user.dto
 
-import com.example.maktab.module.storage.entity.StorageResourceEntity
+import com.example.maktab.module.storage.dto.StorageResourcePublicDTO
 import com.example.maktab.module.user.entity.RoleEntity
 
 /*
@@ -13,5 +13,5 @@ data class UserDTO(
     val email: String?,
     val phone: String?,
     val role: RoleEntity,
-    val avatar: StorageResourceEntity?
+    val avatar: StorageResourcePublicDTO?
 )

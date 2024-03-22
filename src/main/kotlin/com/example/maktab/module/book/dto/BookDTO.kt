@@ -1,7 +1,7 @@
 package com.example.maktab.module.book.dto
 
 import com.example.maktab.module.category.dto.CategoryDTO
-import com.example.maktab.module.storage.entity.StorageResourceEntity
+import com.example.maktab.module.storage.dto.StorageResourcePublicDTO
 import java.util.Date
 
 data class BookDTO(
@@ -9,8 +9,8 @@ data class BookDTO(
     val title: String,
     val description: String,
     val price: Int,
-    val document: StorageResourceEntity,
-    val images: List<StorageResourceEntity>,
+    val document: StorageResourcePublicDTO,
+    val images: List<StorageResourcePublicDTO>,
     val categories: List<CategoryDTO>,
     val createdAt: Date? = null,
     val updatedAt: Date? = null

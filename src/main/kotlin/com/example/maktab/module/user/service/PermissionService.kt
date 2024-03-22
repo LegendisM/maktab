@@ -11,8 +11,14 @@ class PermissionService(
     private val permissionRepository: PermissionRepository
 ) {
     @Transactional
-    fun createPermission(permission: PermissionEntity): PermissionEntity {
-        return savePermission(permission)
+    fun createPermission(key: String, name: String, groupKey: String): PermissionEntity {
+        return savePermission(
+            PermissionEntity(
+                key = key,
+                name = name,
+                groupKey = groupKey
+            )
+        )
     }
 
     @Transactional(readOnly = true)

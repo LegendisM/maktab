@@ -47,7 +47,8 @@ class UserService(
 
     @Transactional(readOnly = true)
     fun getAllUsers(filterModel: FilterUserModel, page: Pageable): PaginationResponseModel<UserModel> {
-        val users = userRepository.findAll(UserSpecification.filter(filterModel), page)
+        val filter = UserSpecification.filter(filterModel, useLikeExpression = true)
+        val users = userRepository.findAll(filter, page)
 
         return PaginationResponseModel(
             items = userMapper.toModels(users.toList()),
