@@ -77,7 +77,7 @@ class BookService(
 
     @Transactional(readOnly = true)
     fun findByIdOrThrow(id: String): BookEntity {
-        return bookRepository.findById(id).orElseThrow { ApiError.NotFound("Invalid Id") }
+        return bookRepository.findById(id).orElseThrow { ApiError.NotFound("Invalid Book Id") }
     }
 
     @Transactional

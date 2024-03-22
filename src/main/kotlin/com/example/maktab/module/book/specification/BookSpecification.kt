@@ -36,11 +36,11 @@ object BookSpecification {
     fun filterByCategory(category: String?) = Specification<BookEntity> { root, _, builder ->
         if (category == null) return@Specification null
 
-        val bookCategories = root.join<CategoryEntity, BookEntity>(BookEntity::categories.name)
+        val joinCategory = root.join<CategoryEntity, BookEntity>(BookEntity::categories.name)
 
         builder.like(
             builder.lower(
-                bookCategories.get(CategoryEntity::title.name)
+                joinCategory.get(CategoryEntity::title.name)
             ),
             "%${category.lowercase()}%"
         )

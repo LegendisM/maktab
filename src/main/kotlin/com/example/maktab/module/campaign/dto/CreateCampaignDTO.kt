@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.Length
 import org.hibernate.validator.constraints.UUID
 import java.util.Date
 
-data class CreateCampaignDTO(
+data class CreateCampaignRequestDTO(
     @field:Length(min = 1, max = 255)
     var title: String,
 

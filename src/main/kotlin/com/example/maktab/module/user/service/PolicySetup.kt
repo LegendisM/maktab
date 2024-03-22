@@ -6,6 +6,7 @@ import com.example.maktab.module.user.entity.RoleEntity
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PolicySetup(
@@ -13,10 +14,12 @@ class PolicySetup(
     private val roleService: RoleService,
     private val permissionService: PermissionService
 ) : ApplicationRunner {
+    @Transactional
     override fun run(args: ApplicationArguments?) {
         initialize()
     }
 
+    @Transactional
     fun initialize() {
         val permissions = policyConfiguration.data.permissions
         val roles = policyConfiguration.data.roles

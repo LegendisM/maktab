@@ -4,6 +4,7 @@ import com.example.maktab.common.entity.BaseEntity
 import com.example.maktab.module.category.entity.CategoryEntity
 import com.example.maktab.module.storage.entity.StorageResourceEntity
 import com.example.maktab.module.tag.entity.TagEntity
+import com.example.maktab.module.user.entity.UserEntity
 import jakarta.persistence.*
 import java.util.*
 
@@ -14,6 +15,7 @@ class CampaignEntity(
     description: String,
     startAt: Date,
     finishAt: Date,
+    owner: UserEntity,
     category: CategoryEntity,
     tags: MutableList<TagEntity>
 ) : BaseEntity() {
@@ -28,6 +30,13 @@ class CampaignEntity(
 
     @Column
     var finishAt: Date = finishAt
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    var owner: UserEntity = owner // TODO: summary (just return the username field)
+
+    @Column(name = "owner_id", insertable = false, updatable = false)
+    val ownerId: String? = null
 
     @ManyToOne
     @JoinColumn(name = "category_id")

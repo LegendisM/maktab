@@ -13,20 +13,24 @@ class RoleService(
     private val roleRepository: RoleRepository,
     private val policyConfiguration: PolicyConfiguration
 ) {
+    @Transactional
     fun createRole(role: RoleEntity): RoleEntity {
         return saveRole(role)
     }
 
+    @Transactional(readOnly = true)
     fun findByKey(key: String): Optional<RoleEntity> {
         return roleRepository.findById(key)
     }
 
+    @Transactional(readOnly = true)
     fun getDefaultUserRole(): RoleEntity {
         return findByKey(policyConfiguration.data.defaultUserRoleKey).orElseThrow {
             ApiError.Conflict("Default user role not found")
         }
     }
 
+    @Transactional
     fun deleteRole(key: String) {
         roleRepository.deleteById(key)
     }

@@ -64,7 +64,7 @@ class CategoryService(
 
     @Transactional(readOnly = true)
     fun findByIdOrThrow(id: String): CategoryEntity {
-        return categoryRepository.findById(id).orElseThrow { ApiError.NotFound("Invalid Id") }
+        return categoryRepository.findById(id).orElseThrow { ApiError.NotFound("Invalid Category Id") }
     }
 
     @Transactional

@@ -71,7 +71,7 @@ class UserService(
 
     @Transactional(readOnly = true)
     fun findByIdOrThrow(id: String): UserEntity {
-        return userRepository.findById(id).orElseThrow { ApiError.NotFound("Invalid Id") }
+        return userRepository.findById(id).orElseThrow { ApiError.NotFound("Invalid User Id") }
     }
 
     @Transactional(readOnly = true)

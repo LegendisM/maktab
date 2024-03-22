@@ -10,14 +10,17 @@ import java.util.Optional
 class PermissionService(
     private val permissionRepository: PermissionRepository
 ) {
+    @Transactional
     fun createPermission(permission: PermissionEntity): PermissionEntity {
         return savePermission(permission)
     }
 
+    @Transactional(readOnly = true)
     fun findByKey(key: String): Optional<PermissionEntity> {
         return permissionRepository.findById(key)
     }
 
+    @Transactional
     fun deletePermission(key: String) {
         permissionRepository.deleteById(key)
     }

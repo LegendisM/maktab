@@ -10,6 +10,7 @@ import com.example.maktab.module.tag.service.TagService
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -38,7 +39,7 @@ class TagController(
     @PostMapping("/filter")
     fun getAllTags(
         @RequestBody @Valid filterDto: FilterTagRequestDTO,
-        page: Pageable
+        @PageableDefault page: Pageable
     ): ApiDTO.Response.Success<Page<TagDTO>> {
         val result = tagService.getAllTags(filterDto, page)
 

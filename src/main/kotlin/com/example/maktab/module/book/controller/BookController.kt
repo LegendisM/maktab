@@ -12,6 +12,7 @@ import jakarta.validation.Valid
 import org.hibernate.validator.constraints.UUID
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -41,7 +42,7 @@ class BookController(
     @PostMapping("/filter")
     fun getAllBooks(
         @RequestBody @Valid filterDto: FilterBookRequestDTO,
-        page: Pageable
+        @PageableDefault page: Pageable
     ): ApiDTO.Response.Success<Page<BookDTO>> {
         val result = bookService.getAllBooks(filterDto, page)
 

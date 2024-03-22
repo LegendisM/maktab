@@ -15,6 +15,7 @@ class StorageResourceService(
     private val storageResourceMapper: StorageResourceMapper,
     private val storageResourceRepository: StorageResourceRepository
 ) {
+    @Transactional
     fun createResource(
         createModel: CreateStorageResourceModel,
         owner: StorageResourceOwnerModel
