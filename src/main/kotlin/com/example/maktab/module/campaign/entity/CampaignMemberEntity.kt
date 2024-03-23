@@ -1,13 +1,14 @@
 package com.example.maktab.module.campaign.entity
 
 import com.example.maktab.common.entity.BaseEntity
+import com.example.maktab.module.campaign.enums.CampaignMemberRole
 import com.example.maktab.module.user.entity.UserEntity
 import jakarta.persistence.*
 
 @Entity
 @Table(name = "campaign_members")
 class CampaignMemberEntity(
-    isOwner: Boolean,
+    role: CampaignMemberRole,
     user: UserEntity,
     campaign: CampaignEntity
 ) : BaseEntity() {
@@ -15,10 +16,8 @@ class CampaignMemberEntity(
     var score: Int = 0
 
     @Column
-    var isOwner: Boolean = isOwner
-
-    @Column
-    var isModerator: Boolean = false
+    @Enumerated(EnumType.STRING)
+    var role: CampaignMemberRole = role
 
     @ManyToOne
     @JoinColumn(name = "user_id")

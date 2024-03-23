@@ -5,6 +5,7 @@ import com.example.maktab.module.campaign.dto.member.CampaignMemberDTO
 import com.example.maktab.module.campaign.dto.member.UpdateCampaignMemberRequestDTO
 import com.example.maktab.module.campaign.entity.CampaignEntity
 import com.example.maktab.module.campaign.entity.CampaignMemberEntity
+import com.example.maktab.module.campaign.enums.CampaignMemberRole
 import com.example.maktab.module.campaign.mapper.CampaignMemberMapper
 import com.example.maktab.module.campaign.repository.CampaignMemberRepository
 import com.example.maktab.module.campaign.specification.CampaignMemberSpecification
@@ -13,6 +14,7 @@ import jakarta.persistence.EntityManager
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Lazy
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.Optional
@@ -30,7 +32,7 @@ class CampaignMemberService(
     fun addMemberIntoCampaign(
         campaign: CampaignEntity,
         user: UserEntity,
-        isOwner: Boolean = false
+        role: CampaignMemberRole = CampaignMemberRole.DEFAULT
     ): CampaignMemberEntity {
         val isExists = this.existMemberOfCampaignByUserId(campaign.id!!, user.id!!)
 
@@ -39,7 +41,7 @@ class CampaignMemberService(
 
         val campaignMember = this.saveCampaignMember(
             CampaignMemberEntity(
-                isOwner = isOwner,
+                role = role,
                 user = user,
                 campaign = campaign
             )
@@ -51,7 +53,11 @@ class CampaignMemberService(
     }
 
     @Transactional(readOnly = true)
-    fun getAllCampaignMembers(campaignId: String, requestUserId: String? = null): List<CampaignMemberDTO> {
+    fun getAllCampaignMembers(
+        campaignId: String,
+        page: Pageable,
+        requestUserId: String? = null
+    ): Page<CampaignMemberDTO> {
         val campaign = campaignService.findByIdOrThrow(campaignId)
 
         // * Validate campaign membership for when requester user id existed
@@ -60,9 +66,9 @@ class CampaignMemberService(
         }
 
         val filter = CampaignMemberSpecification.filterByCampaignId(campaignId)
-        val campaignMembers = campaignMemberRepository.findAll(filter)
+        val campaignMembers = campaignMemberRepository.findAll(filter, page)
 
-        return campaignMemberMapper.toDtos(campaignMembers)
+        return campaignMembers.map { campaignMemberMapper.toDto(it) }
     }
 
     @Transactional(readOnly = true)
@@ -112,7 +118,13 @@ class CampaignMemberService(
 
         campaignMember.apply {
             updateDto.isModerator?.let {
-                this.isModerator = it
+                if (this.role != CampaignMemberRole.OWNER) {
+                    this.role = if (it) {
+                        CampaignMemberRole.MODERATOR
+                    } else {
+                        CampaignMemberRole.DEFAULT
+                    }
+                }
             }
 
             updateDto.score?.let {
@@ -143,6 +155,6 @@ class CampaignMemberService(
     }
 
     fun validateTheMemberHasAccessForManagement(campaignMember: CampaignMemberEntity) {
-        if (!campaignMember.isOwner && !campaignMember.isModerator) throw ApiError.Forbidden("You don't have enough permission for management")
+        if (campaignMember.role == CampaignMemberRole.DEFAULT) throw ApiError.Forbidden("You don't have enough permission for management")
     }
 }

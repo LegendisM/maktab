@@ -110,9 +110,10 @@ class CampaignController(
     @Auth
     fun getAllMembersOfCampaign(
         @PathVariable("id") @Valid @UUID id: String,
+        @PageableDefault page: Pageable,
         @CurrentUser user: UserModel
-    ): ApiDTO.Response.Success<List<CampaignMemberDTO>> {
-        val result = campaignMemberService.getAllCampaignMembers(id, requestUserId = user.id)
+    ): ApiDTO.Response.Success<Page<CampaignMemberDTO>> {
+        val result = campaignMemberService.getAllCampaignMembers(id, page, requestUserId = user.id)
 
         return ApiDTO.Response.Success(result)
     }
@@ -127,6 +128,6 @@ class CampaignController(
     ): ApiDTO.Response.Success<String> {
         campaignMemberService.updateCampaignMember(id, memberId, updateDto, requestUserId = user.id)
 
-        return ApiDTO.Response.Success("The moderation state of member changed successfully")
+        return ApiDTO.Response.Success("The member of campaign updated successfully")
     }
 }

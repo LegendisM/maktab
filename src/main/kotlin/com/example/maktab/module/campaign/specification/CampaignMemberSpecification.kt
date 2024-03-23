@@ -1,5 +1,6 @@
 package com.example.maktab.module.campaign.specification
 
+import com.example.maktab.module.campaign.entity.CampaignEntity
 import com.example.maktab.module.campaign.entity.CampaignMemberEntity
 import com.example.maktab.module.user.entity.UserEntity
 import org.springframework.data.jpa.domain.Specification
@@ -26,7 +27,7 @@ object CampaignMemberSpecification {
     fun filterByCampaignId(campaignId: String?) = Specification<CampaignMemberEntity> { root, _, builder ->
         if (campaignId == null) return@Specification null
 
-        val joinCampaign = root.join<UserEntity, CampaignMemberEntity>(CampaignMemberEntity::user.name)
+        val joinCampaign = root.join<CampaignEntity, CampaignMemberEntity>(CampaignMemberEntity::campaign.name)
 
         builder.equal(joinCampaign.get<String>("id"), campaignId)
     }

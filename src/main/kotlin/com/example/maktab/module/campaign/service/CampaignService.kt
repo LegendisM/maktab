@@ -6,6 +6,7 @@ import com.example.maktab.module.campaign.dto.CreateCampaignRequestDTO
 import com.example.maktab.module.campaign.dto.FilterCampaignRequestDTO
 import com.example.maktab.module.campaign.dto.UpdateCampaignRequestDTO
 import com.example.maktab.module.campaign.entity.CampaignEntity
+import com.example.maktab.module.campaign.enums.CampaignMemberRole
 import com.example.maktab.module.campaign.enums.CampaignStatus
 import com.example.maktab.module.campaign.mapper.CampaignMapper
 import com.example.maktab.module.campaign.repository.CampaignRepository
@@ -55,7 +56,7 @@ class CampaignService(
             )
         })
 
-        campaignMemberService.addMemberIntoCampaign(campaign, user, isOwner = true)
+        this.joinIntoCampaign(campaign.id!!, user.id!!, CampaignMemberRole.OWNER)
 
         logger.info("Campaign created with id ${campaign.id}")
 
@@ -131,14 +132,18 @@ class CampaignService(
     fun saveCampaign(campaign: CampaignEntity): CampaignEntity = campaignRepository.save(campaign)
 
     @Transactional
-    fun joinIntoCampaign(campaignId: String, userId: String) {
+    fun joinIntoCampaign(
+        campaignId: String,
+        userId: String,
+        role: CampaignMemberRole = CampaignMemberRole.DEFAULT
+    ) {
         val campaign = this.findByIdOrThrow(campaignId)
         val user = entityManager.getReference(UserEntity::class.java, userId)
 
         // * Validate joining policy (member count)
         this.validateCampaignJoiningPolicy(campaign)
 
-        campaignMemberService.addMemberIntoCampaign(campaign, user)
+        campaignMemberService.addMemberIntoCampaign(campaign, user, role)
         campaign.currentMemberCount++
 
         this.saveCampaign(campaign)

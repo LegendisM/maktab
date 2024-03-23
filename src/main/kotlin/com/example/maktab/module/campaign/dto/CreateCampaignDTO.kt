@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.constraints.Range
 import org.hibernate.validator.constraints.UUID
 import java.util.Date
 
@@ -20,7 +21,7 @@ data class CreateCampaignRequestDTO(
     @field:NotNull
     var finishAt: Date,
 
-    @field:Max(12)
+    @field:Range(min = 2, max = 12)
     var maxMemberCount: Int,
 
     @field:UUID
