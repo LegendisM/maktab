@@ -55,7 +55,7 @@ class CampaignService(
             )
         })
 
-        campaignMemberService.addMemberIntoCampaign(campaign, user, isModerator = true)
+        campaignMemberService.addMemberIntoCampaign(campaign, user, isOwner = true)
 
         logger.info("Campaign created with id ${campaign.id}")
 
@@ -138,7 +138,7 @@ class CampaignService(
         // * Validate joining policy (member count)
         this.validateCampaignJoiningPolicy(campaign)
 
-        campaignMemberService.addMemberIntoCampaign(campaign, user, isModerator = false)
+        campaignMemberService.addMemberIntoCampaign(campaign, user)
         campaign.currentMemberCount++
 
         this.saveCampaign(campaign)

@@ -27,7 +27,11 @@ class CampaignMemberService(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @Transactional
-    fun addMemberIntoCampaign(campaign: CampaignEntity, user: UserEntity, isOwner: Boolean): CampaignMemberEntity {
+    fun addMemberIntoCampaign(
+        campaign: CampaignEntity,
+        user: UserEntity,
+        isOwner: Boolean = false
+    ): CampaignMemberEntity {
         val isExists = this.existMemberOfCampaignByUserId(campaign.id!!, user.id!!)
 
         // * Prevent of already joined users
