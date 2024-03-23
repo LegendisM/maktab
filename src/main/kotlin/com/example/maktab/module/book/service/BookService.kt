@@ -62,13 +62,6 @@ class BookService(
     }
 
     @Transactional(readOnly = true)
-    fun getBook(id: String): BookDTO {
-        val book = this.findByIdOrThrow(id)
-
-        return bookMapper.toDto(book)
-    }
-
-    @Transactional(readOnly = true)
     fun getBookById(id: String): BookDTO {
         val book = this.findByIdOrThrow(id)
 

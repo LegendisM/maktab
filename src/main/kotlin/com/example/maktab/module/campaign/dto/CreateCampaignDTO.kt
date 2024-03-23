@@ -1,5 +1,6 @@
 package com.example.maktab.module.campaign.dto
 
+import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 import org.hibernate.validator.constraints.Length
@@ -18,6 +19,9 @@ data class CreateCampaignRequestDTO(
 
     @field:NotNull
     var finishAt: Date,
+
+    @field:Max(12)
+    var maxMemberCount: Int,
 
     @field:UUID
     var categoryId: String,

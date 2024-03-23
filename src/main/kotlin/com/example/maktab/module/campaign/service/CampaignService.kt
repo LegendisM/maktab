@@ -6,6 +6,7 @@ import com.example.maktab.module.campaign.dto.CreateCampaignRequestDTO
 import com.example.maktab.module.campaign.dto.FilterCampaignRequestDTO
 import com.example.maktab.module.campaign.dto.UpdateCampaignRequestDTO
 import com.example.maktab.module.campaign.entity.CampaignEntity
+import com.example.maktab.module.campaign.enums.CampaignStatus
 import com.example.maktab.module.campaign.mapper.CampaignMapper
 import com.example.maktab.module.campaign.repository.CampaignRepository
 import com.example.maktab.module.campaign.specification.CampaignSpecification
@@ -25,7 +26,8 @@ class CampaignService(
     private val entityManager: EntityManager,
     private val campaignRepository: CampaignRepository,
     private val campaignMapper: CampaignMapper,
-    private val tagService: TagService
+    private val tagService: TagService,
+    private val campaignMemberService: CampaignMemberService
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -44,11 +46,16 @@ class CampaignService(
                 description = it.description,
                 startAt = it.startAt,
                 finishAt = it.finishAt,
+                currentMemberCount = 0,
+                maxMemberCount = createDto.maxMemberCount,
+                status = CampaignStatus.PENDING,
                 owner = user,
                 category = category,
                 tags = tags.toMutableList()
             )
         })
+
+        campaignMemberService.addMemberIntoCampaign(campaign, user, isModerator = true)
 
         logger.info("Campaign created with id ${campaign.id}")
 
@@ -76,11 +83,11 @@ class CampaignService(
     }
 
     @Transactional
-    fun updateCampaign(id: String, updateDto: UpdateCampaignRequestDTO, ownerId: String? = null): CampaignDTO {
+    fun updateCampaign(id: String, updateDto: UpdateCampaignRequestDTO, requestUserId: String? = null): CampaignDTO {
         val campaign = this.findByIdOrThrow(id)
 
-        // * Validate campaign ownership for existing ownerId
-        ownerId?.let {
+        // * Validate campaign ownership for when requester user id existed
+        requestUserId?.let {
             this.validateOwnershipOfCampaign(campaign, it)
         }
 
@@ -107,12 +114,12 @@ class CampaignService(
     }
 
     @Transactional
-    fun deleteCampaign(id: String, ownerId: String? = null) {
+    fun deleteCampaign(id: String, requestUserId: String? = null) {
         val campaign = this.findByIdOrThrow(id)
 
-        // * Validate campaign ownership for existing ownerId
-        ownerId?.let {
-            this.validateOwnershipOfCampaign(campaign, ownerId)
+        // * Validate campaign ownership for when requester user id existed
+        requestUserId?.let {
+            this.validateOwnershipOfCampaign(campaign, it)
         }
 
         campaignRepository.delete(campaign)
@@ -123,6 +130,34 @@ class CampaignService(
     @Transactional
     fun saveCampaign(campaign: CampaignEntity): CampaignEntity = campaignRepository.save(campaign)
 
+    @Transactional
+    fun joinIntoCampaign(campaignId: String, userId: String) {
+        val campaign = this.findByIdOrThrow(campaignId)
+        val user = entityManager.getReference(UserEntity::class.java, userId)
+
+        // * Validate joining policy (member count)
+        this.validateCampaignJoiningPolicy(campaign)
+
+        campaignMemberService.addMemberIntoCampaign(campaign, user, isModerator = false)
+        campaign.currentMemberCount++
+
+        this.saveCampaign(campaign)
+    }
+
+    @Transactional
+    fun leaveFromCampaign(campaignId: String, userId: String) {
+        val campaign = this.findByIdOrThrow(campaignId)
+        val user = entityManager.getReference(UserEntity::class.java, userId)
+
+        // * Validate leaving policy (ownership)
+        this.validateCampaignLeavingPolicy(campaign, user)
+
+        campaignMemberService.removeMemberFromCampaign(campaign, user)
+        campaign.currentMemberCount--
+
+        this.saveCampaign(campaign)
+    }
+
     fun validateCampaignRequiredResources(
         tags: List<TagEntity>
     ) {
@@ -131,5 +166,13 @@ class CampaignService(
 
     fun validateOwnershipOfCampaign(campaign: CampaignEntity, ownerId: String?) {
         if (ownerId != null && campaign.ownerId != ownerId) throw ApiError.Forbidden("You do not have permission to access this campaign")
+    }
+
+    fun validateCampaignJoiningPolicy(campaign: CampaignEntity) {
+        if (campaign.currentMemberCount + 1 > campaign.maxMemberCount) throw ApiError.Conflict("The campaign is completed (full)")
+    }
+
+    fun validateCampaignLeavingPolicy(campaign: CampaignEntity, user: UserEntity) {
+        if (campaign.ownerId == user.id) throw ApiError.Conflict("Your the owner of the camping, you can't leave")
     }
 }

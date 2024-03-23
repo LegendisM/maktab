@@ -7,6 +7,9 @@ import com.example.maktab.module.campaign.dto.CampaignDTO
 import com.example.maktab.module.campaign.dto.CreateCampaignRequestDTO
 import com.example.maktab.module.campaign.dto.FilterCampaignRequestDTO
 import com.example.maktab.module.campaign.dto.UpdateCampaignRequestDTO
+import com.example.maktab.module.campaign.dto.member.CampaignMemberDTO
+import com.example.maktab.module.campaign.dto.member.UpdateCampaignMemberRequestDTO
+import com.example.maktab.module.campaign.service.CampaignMemberService
 import com.example.maktab.module.campaign.service.CampaignService
 import com.example.maktab.module.user.model.UserModel
 import jakarta.validation.Valid
@@ -27,7 +30,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/v1/campaigns")
 class CampaignController(
-    private val campaignService: CampaignService
+    private val campaignService: CampaignService,
+    private val campaignMemberService: CampaignMemberService
 ) {
     @PostMapping
     @Auth
@@ -64,7 +68,7 @@ class CampaignController(
         @RequestBody @Valid updateDto: UpdateCampaignRequestDTO,
         @CurrentUser user: UserModel
     ): ApiDTO.Response.Success<CampaignDTO> {
-        val result = campaignService.updateCampaign(id, updateDto, user.id)
+        val result = campaignService.updateCampaign(id, updateDto, requestUserId = user.id)
 
         return ApiDTO.Response.Success(result)
     }
@@ -75,8 +79,54 @@ class CampaignController(
         @PathVariable("id") @Valid @UUID id: String,
         @CurrentUser user: UserModel
     ): ApiDTO.Response.Success<String> {
-        campaignService.deleteCampaign(id, user.id)
+        campaignService.deleteCampaign(id, requestUserId = user.id)
 
         return ApiDTO.Response.Success("Deleted Successfully")
+    }
+
+    @GetMapping("/{id}/join")
+    @Auth
+    fun joinIntoCampaign(
+        @PathVariable("id") @Valid @UUID id: String,
+        @CurrentUser user: UserModel
+    ): ApiDTO.Response.Success<String> {
+        campaignService.joinIntoCampaign(id, user.id)
+
+        return ApiDTO.Response.Success("You joined successfully")
+    }
+
+    @GetMapping("/{id}/leave")
+    @Auth
+    fun leaveFromCampaign(
+        @PathVariable("id") @Valid @UUID id: String,
+        @CurrentUser user: UserModel
+    ): ApiDTO.Response.Success<String> {
+        campaignService.leaveFromCampaign(id, user.id)
+
+        return ApiDTO.Response.Success("You leaved successfully")
+    }
+
+    @GetMapping("/{id}/members")
+    @Auth
+    fun getAllMembersOfCampaign(
+        @PathVariable("id") @Valid @UUID id: String,
+        @CurrentUser user: UserModel
+    ): ApiDTO.Response.Success<List<CampaignMemberDTO>> {
+        val result = campaignMemberService.getAllCampaignMembers(id, requestUserId = user.id)
+
+        return ApiDTO.Response.Success(result)
+    }
+
+    @PatchMapping("/{id}/members/{memberId}")
+    @Auth
+    fun updateCampaignMember(
+        @PathVariable("id") @Valid @UUID id: String,
+        @PathVariable("memberId") @Valid @UUID memberId: String,
+        @RequestBody @Valid updateDto: UpdateCampaignMemberRequestDTO,
+        @CurrentUser user: UserModel
+    ): ApiDTO.Response.Success<String> {
+        campaignMemberService.updateCampaignMember(id, memberId, updateDto, requestUserId = user.id)
+
+        return ApiDTO.Response.Success("The moderation state of member changed successfully")
     }
 }

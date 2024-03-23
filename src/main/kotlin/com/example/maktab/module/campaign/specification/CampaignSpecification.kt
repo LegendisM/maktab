@@ -2,6 +2,7 @@ package com.example.maktab.module.campaign.specification
 
 import com.example.maktab.module.campaign.dto.FilterCampaignRequestDTO
 import com.example.maktab.module.campaign.entity.CampaignEntity
+import com.example.maktab.module.campaign.enums.CampaignStatus
 import com.example.maktab.module.category.entity.CategoryEntity
 import com.example.maktab.module.tag.entity.TagEntity
 import org.springframework.data.jpa.domain.Specification
@@ -13,6 +14,7 @@ object CampaignSpecification {
             filterByTitle(filterDto.title)
                 .and(filterByStartAt(filterDto.startAt))
                 .and(filterByFinishAt(filterDto.finishAt))
+                .and(filterByStatus(filterDto.status))
                 .and(filterByCategory(filterDto.category))
                 .and(filterByTags(filterDto.tags))
         )
@@ -34,6 +36,12 @@ object CampaignSpecification {
         if (finishAt == null) return@Specification null
 
         builder.lessThanOrEqualTo(root.get(CampaignEntity::finishAt.name), finishAt)
+    }
+
+    fun filterByStatus(status: CampaignStatus?) = Specification<CampaignEntity> { root, _, builder ->
+        if (status == null) return@Specification null
+
+        builder.equal(root.get<String>(CampaignEntity::status.name), status)
     }
 
     fun filterByCategory(category: String?) = Specification<CampaignEntity> { root, query, builder ->

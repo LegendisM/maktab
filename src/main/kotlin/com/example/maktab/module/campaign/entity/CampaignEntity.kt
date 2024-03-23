@@ -2,6 +2,7 @@ package com.example.maktab.module.campaign.entity
 
 import com.example.maktab.common.entity.BaseEntity
 import com.example.maktab.module.campaign.dto.CampaignDTO
+import com.example.maktab.module.campaign.enums.CampaignStatus
 import com.example.maktab.module.category.entity.CategoryEntity
 import com.example.maktab.module.tag.entity.TagEntity
 import com.example.maktab.module.user.entity.UserEntity
@@ -15,6 +16,9 @@ class CampaignEntity(
     description: String,
     startAt: Date,
     finishAt: Date,
+    currentMemberCount: Int,
+    maxMemberCount: Int,
+    status: CampaignStatus,
     owner: UserEntity,
     category: CategoryEntity,
     tags: MutableList<TagEntity>
@@ -30,6 +34,16 @@ class CampaignEntity(
 
     @Column
     var finishAt: Date = finishAt
+
+    @Column
+    var currentMemberCount: Int = currentMemberCount
+
+    @Column
+    var maxMemberCount: Int = maxMemberCount
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    var status: CampaignStatus = status
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
